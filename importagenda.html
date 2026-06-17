@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rooster naar Agenda — Scriba Nova</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --ink: #1c2530;
+    --muted: #687485;
+    --line: #e3e7ed;
+    --accent: #2f6f4f;
+    --accent-soft: #e7f1ec;
+    --danger: #b4452f;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 32px 20px 80px; }
+  header h1 { font-size: 28px; margin: 0 0 6px; }
+  header p { color: var(--muted); margin: 0 0 28px; max-width: 640px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .card h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 0 0 16px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 0 0 6px; }
+  input[type=text], input[type=password], input[type=date], input[type=time], select, textarea {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    font: inherit;
+    color: var(--ink);
+    background: #fff;
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+  textarea { resize: vertical; min-height: 90px; }
+  .row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 150px; }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .hint a { color: var(--accent); }
+  button {
+    font: inherit;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 18px;
+    cursor: pointer;
+    background: var(--accent);
+    color: #fff;
+    transition: opacity .15s;
+  }
+  button:hover { opacity: .9; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  button.ghost { background: #eef1f5; color: var(--ink); }
+  button.small { padding: 6px 11px; font-size: 13px; }
+  button.danger { background: transparent; color: var(--danger); padding: 4px 8px; }
+
+  .drop {
+    border: 2px dashed var(--line);
+    border-radius: var(--radius);
+    padding: 30px;
+    text-align: center;
+    color: var(--muted);
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .drop.over { border-color: var(--accent); background: var(--accent-soft); }
+  .drop strong { color: var(--ink); }
+  .files { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #eef1f5; border-radius: 20px; padding: 5px 12px; font-size: 13px;
+  }
+  .chip span.x { cursor: pointer; color: var(--muted); font-weight: 700; }
+
+  .divider { text-align: center; color: var(--muted); font-size: 13px; margin: 16px 0; }
+
+  #status { font-size: 14px; margin-top: 14px; min-height: 20px; }
+  #status.err { color: var(--danger); }
+  #status.ok { color: var(--accent); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .tablewrap { overflow-x: auto; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); white-space: nowrap; }
+  td input[type=text], td input[type=date], td input[type=time] { padding: 6px 8px; font-size: 13px; }
+  td.tcheck { text-align: center; }
+  .col-title { min-width: 170px; }
+  .col-loc { min-width: 130px; }
+  .col-desc { min-width: 160px; }
+
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 18px; }
+  .spacer { flex: 1; }
+  .badge { display:inline-block; background: var(--accent-soft); color: var(--accent); border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 600; }
+  .hidden { display: none; }
+  .notes { background: #fff8ec; border: 1px solid #f0e2c4; border-radius: 10px; padding: 12px; font-size: 13px; margin-bottom: 16px; }
+  details summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+  footer { color: var(--muted); font-size: 12px; text-align: center; margin-top: 8px; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Rooster naar Agenda</h1>
+    <p>Sleep een rooster erin (foto, Excel, CSV of PDF) of plak het. Het wordt geanalyseerd, jij controleert, en je downloadt een agendabestand dat direct in je telefoon laadt.</p>
+  </header>
+
+  <!-- Instellingen -->
+  <div class="card">
+    <h2>Instellingen</h2>
+    <div class="row">
+      <div>
+        <label for="pw">Toegangscode</label>
+        <input type="password" id="pw" placeholder="Voer de code in">
+        <p class="hint">Nodig om de analyse te gebruiken.</p>
+      </div>
+      <div>
+        <label for="model">Model</label>
+        <select id="model">
+          <option value="claude-opus-4-8">Opus 4.8 (beste)</option>
+          <option value="claude-sonnet-4-6">Sonnet 4.6 (sneller, goedkoper)</option>
+          <option value="claude-haiku-4-5">Haiku 4.5 (snelst)</option>
+        </select>
+      </div>
+      <div>
+        <label for="defyear">Standaardjaar</label>
+        <input type="text" id="defyear" inputmode="numeric" maxlength="4">
+        <p class="hint">Gebruikt als het rooster geen jaartal noemt.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoer -->
+  <div class="card">
+    <h2>Rooster</h2>
+    <div class="drop" id="drop">
+      <strong>Sleep een bestand hierheen</strong> of klik om te kiezen<br>
+      <span style="font-size:13px;">Foto (JPG/PNG), Excel (.xlsx/.xls), CSV of PDF</span>
+    </div>
+    <input type="file" id="fileinput" class="hidden" accept=".jpg,.jpeg,.png,.webp,.gif,.xlsx,.xls,.csv,.txt,.pdf" multiple>
+    <div class="files" id="files"></div>
+
+    <div class="divider">— of plak de tekst van je rooster —</div>
+    <textarea id="paste" placeholder="Plak hier bijvoorbeeld een tabel uit Excel of een lijst met diensten..."></textarea>
+
+    <div class="actions">
+      <button id="analyze">Analyseer rooster</button>
+      <button class="ghost" id="clearall">Wis alles</button>
+    </div>
+    <div id="status"></div>
+  </div>
+
+  <!-- Resultaat -->
+  <div class="card hidden" id="resultcard">
+    <h2>Gevonden afspraken <span class="badge" id="count">0</span></h2>
+    <div class="notes hidden" id="notes"></div>
+    <div class="tablewrap">
+      <table id="table">
+        <thead>
+          <tr>
+            <th class="col-title">Titel</th>
+            <th>Datum</th>
+            <th>Eind&shy;datum</th>
+            <th class="tcheck">Hele dag</th>
+            <th>Start</th>
+            <th>Eind</th>
+            <th class="col-loc">Locatie</th>
+            <th class="col-desc">Omschrijving</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="actions">
+      <button class="ghost small" id="addrow">+ Rij toevoegen</button>
+      <div class="spacer"></div>
+      <label style="display:flex; align-items:center; gap:7px; font-weight:600; font-size:13px; margin:0;">
+        <input type="checkbox" id="reminder" style="width:auto;"> Herinnering 30 min ervoor
+      </label>
+      <button id="download">Download .ics</button>
+    </div>
+    <details style="margin-top:16px;">
+      <summary>Hoe laad ik dit in mijn agenda?</summary>
+      <p class="hint" style="margin-top:8px;">
+        <strong>iPhone:</strong> open het .ics-bestand (bijv. via Bestanden of mail-bijlage), tik erop en kies "Voeg toe".<br>
+        <strong>Android / Google Agenda:</strong> open <a href="https://calendar.google.com" target="_blank" rel="noopener">calendar.google.com</a> op de computer, ga naar Instellingen → Importeren en exporteren → kies het bestand.
+      </p>
+    </details>
+  </div>
+
+  <footer>Een tool van <a href="https://scribanova.com">Scriba Nova</a></footer>
+</div>
+
+<!-- Excel-parser, alleen geladen wanneer nodig -->
+<script>
+let attachments = []; // { kind: 'image'|'pdf'|'text', name, mediaType, data }
+
+// ---------- localStorage ----------
+const elModel = document.getElementById('model');
+const elYear = document.getElementById('defyear');
+const elPw = document.getElementById('pw');
+elModel.value = localStorage.getItem('ai_model') || 'claude-opus-4-8';
+elYear.value = localStorage.getItem('ai_year') || String(new Date().getFullYear());
+elPw.value = localStorage.getItem('ia_pw') || '';
+elModel.addEventListener('change', () => localStorage.setItem('ai_model', elModel.value));
+elYear.addEventListener('input', () => localStorage.setItem('ai_year', elYear.value.trim()));
+elPw.addEventListener('input', () => localStorage.setItem('ia_pw', elPw.value));
+
+// ---------- bestanden ----------
+const drop = document.getElementById('drop');
+const fileInput = document.getElementById('fileinput');
+const filesEl = document.getElementById('files');
+
+drop.addEventListener('click', () => fileInput.click());
+['dragover','dragenter'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('over'); }));
+['dragleave','drop'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', ev => handleFiles(ev.dataTransfer.files));
+fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+function renderFiles() {
+  filesEl.innerHTML = '';
+  attachments.forEach((a, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.innerHTML = `<span>${a.name}</span><span class="x" data-i="${i}">&times;</span>`;
+    filesEl.appendChild(chip);
+  });
+  filesEl.querySelectorAll('.x').forEach(x => x.addEventListener('click', () => {
+    attachments.splice(+x.dataset.i, 1); renderFiles();
+  }));
+}
+
+async function handleFiles(fileList) {
+  for (const file of fileList) {
+    const name = file.name;
+    const lower = name.toLowerCase();
+    try {
+      if (/\.(jpe?g|png|webp|gif)$/.test(lower)) {
+        const img = await downscaleImage(file);
+        attachments.push({ kind: 'image', name, mediaType: img.mediaType, data: img.data });
+      } else if (/\.pdf$/.test(lower)) {
+        const data = await fileToBase64(file);
+        attachments.push({ kind: 'pdf', name, mediaType: 'application/pdf', data });
+      } else if (/\.(xlsx|xls)$/.test(lower)) {
+        const text = await excelToText(file);
+        attachments.push({ kind: 'text', name, data: text });
+      } else if (/\.(csv|txt)$/.test(lower)) {
+        const text = await file.text();
+        attachments.push({ kind: 'text', name, data: text });
+      } else {
+        setStatus(`Bestandstype van "${name}" wordt niet ondersteund.`, 'err');
+      }
+    } catch (err) {
+      setStatus(`Kon "${name}" niet inlezen: ${err.message}`, 'err');
+    }
+  }
+  renderFiles();
+}
+
+function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = () => rej(new Error('leesfout'));
+    r.readAsDataURL(file);
+  });
+}
+
+// Grote foto's verkleinen: scheelt uploadtijd en blijft onder de payloadlimiet.
+function downscaleImage(file, maxDim = 2000, quality = 0.85) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+      const w = Math.round(img.width * scale);
+      const h = Math.round(img.height * scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', quality);
+      res({ mediaType: 'image/jpeg', data: dataUrl.split(',')[1] });
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('kon afbeelding niet laden')); };
+    img.src = url;
+  });
+}
+
+// SheetJS pas laden wanneer er een Excel-bestand komt
+let xlsxLoading = null;
+function loadXLSX() {
+  if (window.XLSX) return Promise.resolve();
+  if (!xlsxLoading) {
+    xlsxLoading = new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+      s.onload = res; s.onerror = () => rej(new Error('kon Excel-lezer niet laden'));
+      document.head.appendChild(s);
+    });
+  }
+  return xlsxLoading;
+}
+
+async function excelToText(file) {
+  await loadXLSX();
+  const buf = await file.arrayBuffer();
+  const wb = XLSX.read(buf, { type: 'array' });
+  let out = '';
+  wb.SheetNames.forEach(n => {
+    out += `# Tabblad: ${n}\n`;
+    out += XLSX.utils.sheet_to_csv(wb.Sheets[n]) + '\n\n';
+  });
+  return out.trim();
+}
+
+// ---------- status ----------
+const statusEl = document.getElementById('status');
+function setStatus(msg, cls) { statusEl.textContent = msg; statusEl.className = cls || ''; }
+
+// ---------- analyse ----------
+const ANALYZE_URL = '/.netlify/functions/analyze';
+
+document.getElementById('analyze').addEventListener('click', analyze);
+
+async function analyze() {
+  const pasted = document.getElementById('paste').value.trim();
+  if (!elPw.value.trim()) { setStatus('Vul eerst de toegangscode in.', 'err'); return; }
+  if (attachments.length === 0 && !pasted) { setStatus('Voeg een bestand toe of plak je rooster.', 'err'); return; }
+
+  const btn = document.getElementById('analyze');
+  btn.disabled = true;
+  setStatus('Bezig met analyseren...', '');
+
+  const today = new Date().toISOString().slice(0, 10);
+  const defYear = elYear.value.trim() || String(new Date().getFullYear());
+
+  const content = [];
+  for (const a of attachments) {
+    if (a.kind === 'image') {
+      content.push({ type: "image", source: { type: "base64", media_type: a.mediaType, data: a.data } });
+    } else if (a.kind === 'pdf') {
+      content.push({ type: "document", source: { type: "base64", media_type: "application/pdf", data: a.data } });
+    } else if (a.kind === 'text') {
+      content.push({ type: "text", text: `Bestand "${a.name}":\n\n${a.data}` });
+    }
+  }
+  if (pasted) content.push({ type: "text", text: `Geplakt rooster:\n\n${pasted}` });
+
+  try {
+    const resp = await fetch(ANALYZE_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ model: elModel.value, today, defYear, content, password: elPw.value })
+    });
+
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) throw new Error(data.error || `Fout ${resp.status}`);
+
+    const events = data.events || [];
+    renderTable(events);
+    const notesEl = document.getElementById('notes');
+    if (data.notes && data.notes.trim()) {
+      notesEl.textContent = 'Opmerking: ' + data.notes.trim();
+      notesEl.classList.remove('hidden');
+    } else {
+      notesEl.classList.add('hidden');
+    }
+    document.getElementById('resultcard').classList.remove('hidden');
+    setStatus(`Klaar. ${events.length} afspra${events.length === 1 ? 'ak' : 'ken'} gevonden. Controleer en pas aan waar nodig.`, 'ok');
+  } catch (err) {
+    setStatus('Er ging iets mis: ' + err.message, 'err');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ---------- tabel ----------
+const tbody = document.getElementById('tbody');
+const countEl = document.getElementById('count');
+
+function makeRow(ev = {}) {
+  const tr = document.createElement('tr');
+  const allDay = !!ev.all_day;
+  tr.innerHTML = `
+    <td class="col-title"><input type="text" class="f-title" value="${escAttr(ev.title || '')}"></td>
+    <td><input type="date" class="f-date" value="${escAttr(ev.date || '')}"></td>
+    <td><input type="date" class="f-enddate" value="${escAttr(ev.end_date || ev.date || '')}"></td>
+    <td class="tcheck"><input type="checkbox" class="f-allday" ${allDay ? 'checked' : ''}></td>
+    <td><input type="time" class="f-start" value="${escAttr(ev.start_time || '')}" ${allDay ? 'disabled' : ''}></td>
+    <td><input type="time" class="f-end" value="${escAttr(ev.end_time || '')}" ${allDay ? 'disabled' : ''}></td>
+    <td class="col-loc"><input type="text" class="f-loc" value="${escAttr(ev.location || '')}"></td>
+    <td class="col-desc"><input type="text" class="f-desc" value="${escAttr(ev.description || '')}"></td>
+    <td><button class="danger" title="Verwijder">&times;</button></td>`;
+  tr.querySelector('.f-allday').addEventListener('change', e => {
+    const on = e.target.checked;
+    tr.querySelector('.f-start').disabled = on;
+    tr.querySelector('.f-end').disabled = on;
+  });
+  tr.querySelector('.danger').addEventListener('click', () => { tr.remove(); updateCount(); });
+  return tr;
+}
+
+function renderTable(events) {
+  tbody.innerHTML = '';
+  (events.length ? events : [{}]).forEach(ev => tbody.appendChild(makeRow(ev)));
+  updateCount();
+}
+function updateCount() { countEl.textContent = tbody.children.length; }
+
+document.getElementById('addrow').addEventListener('click', () => { tbody.appendChild(makeRow({})); updateCount(); });
+
+function escAttr(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ---------- ICS ----------
+document.getElementById('download').addEventListener('click', downloadICS);
+
+function readRows() {
+  return [...tbody.children].map(tr => ({
+    title: tr.querySelector('.f-title').value.trim(),
+    date: tr.querySelector('.f-date').value,
+    end_date: tr.querySelector('.f-enddate').value,
+    all_day: tr.querySelector('.f-allday').checked,
+    start_time: tr.querySelector('.f-start').value,
+    end_time: tr.querySelector('.f-end').value,
+    location: tr.querySelector('.f-loc').value.trim(),
+    description: tr.querySelector('.f-desc').value.trim()
+  }));
+}
+
+function downloadICS() {
+  const rows = readRows().filter(r => r.title && r.date);
+  if (!rows.length) { setStatus('Geen geldige afspraken om te exporteren (titel en datum nodig).', 'err'); return; }
+  const reminder = document.getElementById('reminder').checked;
+
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Scriba Nova//Rooster naar Agenda//NL",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH"
+  ];
+  const stamp = icsStamp();
+
+  rows.forEach(r => {
+    lines.push("BEGIN:VEVENT");
+    lines.push("UID:" + (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)) + "@scribanova");
+    lines.push("DTSTAMP:" + stamp);
+    if (r.all_day || !r.start_time) {
+      const end = r.end_date && r.end_date >= r.date ? r.end_date : r.date;
+      lines.push("DTSTART;VALUE=DATE:" + ymd(r.date));
+      lines.push("DTEND;VALUE=DATE:" + ymd(addDays(end, 1)));
+    } else {
+      lines.push("DTSTART:" + dt(r.date, r.start_time));
+      const endDate = r.end_date && r.end_date >= r.date ? r.end_date : r.date;
+      const endTime = r.end_time || r.start_time;
+      lines.push("DTEND:" + dt(endDate, endTime));
+    }
+    lines.push("SUMMARY:" + esc(r.title));
+    if (r.location) lines.push("LOCATION:" + esc(r.location));
+    if (r.description) lines.push("DESCRIPTION:" + esc(r.description));
+    if (reminder) {
+      lines.push("BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:Herinnering", "TRIGGER:-PT30M", "END:VALARM");
+    }
+    lines.push("END:VEVENT");
+  });
+  lines.push("END:VCALENDAR");
+
+  const ics = lines.map(foldLine).join("\r\n");
+  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = "agenda.ics";
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  setStatus(`${rows.length} afspra${rows.length === 1 ? 'ak' : 'ken'} geëxporteerd naar agenda.ics`, 'ok');
+}
+
+function esc(s) {
+  return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+}
+function ymd(d) { return d.replace(/-/g, ''); }
+function dt(d, t) { return ymd(d) + "T" + t.replace(':', '') + "00"; }
+function addDays(d, n) {
+  const x = new Date(d + "T00:00:00Z");
+  x.setUTCDate(x.getUTCDate() + n);
+  return x.toISOString().slice(0, 10);
+}
+function icsStamp() {
+  return new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+}
+function foldLine(line) {
+  if (line.length <= 74) return line;
+  let out = line.slice(0, 74);
+  let rest = line.slice(74);
+  while (rest.length > 73) { out += "\r\n " + rest.slice(0, 73); rest = rest.slice(73); }
+  return out + "\r\n " + rest;
+}
+
+// ---------- wissen ----------
+document.getElementById('clearall').addEventListener('click', () => {
+  attachments = []; renderFiles();
+  document.getElementById('paste').value = '';
+  document.getElementById('resultcard').classList.add('hidden');
+  tbody.innerHTML = '';
+  setStatus('', '');
+});
+</script>
+</body>
+</html>

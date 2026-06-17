@@ -1,3 +1,11 @@
+[build]
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/importagenda"
+  to   = "/importagenda.html"
+  status = 200
+
 [[redirects]]
   from = "/privacy-policy"
   to   = "/privacy-policy.html"
