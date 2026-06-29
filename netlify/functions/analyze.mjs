@@ -1,13 +1,11 @@
-// Serverless proxy: houdt de Anthropic-sleutel verborgen en doet alleen rooster-analyse.
-// Omgevingsvariabelen in Netlify:
-//   ANTHROPIC_API_KEY     = je Anthropic-sleutel (verplicht)
-//   IMPORTAGENDA_PASSWORD = gedeelde toegangscode (verplicht; zonder dit weigert de functie)
+// Analyse-proxy. Anonieme bezoekers krijgen een paar gratis analyses per IP per dag;
+// ingelogde gebruikers betalen met credits (1 per analyse, teruggeboekt als het misgaat).
+// Env: ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 
-const ALLOWED_MODELS = new Set([
-  "claude-opus-4-8",
-  "claude-sonnet-4-6",
-  "claude-haiku-4-5"
-]);
+import { createClient } from "@supabase/supabase-js";
+
+const FREE_LIMIT_PER_DAY = 3;
+const ALLOWED_MODELS = new Set(["claude-opus-4-8", "claude-sonnet-4-6", "claude-haiku-4-5"]);
 
 const EVENT_SCHEMA = {
   type: "object",
@@ -53,20 +51,24 @@ const json = (statusCode, obj) => ({
   body: JSON.stringify(obj)
 });
 
+function adminClient() {
+  return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false }
+  });
+}
+
 export const handler = async (event) => {
   if (event.httpMethod !== "POST") return json(405, { error: "Alleen POST." });
 
-  const key = process.env.ANTHROPIC_API_KEY;
-  if (!key) return json(500, { error: "Server mist de API-sleutel (ANTHROPIC_API_KEY)." });
-
-  const gate = process.env.IMPORTAGENDA_PASSWORD;
-  if (!gate) return json(500, { error: "Server mist de toegangscode (IMPORTAGENDA_PASSWORD)." });
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) return json(500, { error: "Server mist de API-sleutel (ANTHROPIC_API_KEY)." });
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return json(500, { error: "Server mist de Supabase-configuratie." });
+  }
 
   let payload;
   try { payload = JSON.parse(event.body || "{}"); }
   catch { return json(400, { error: "Ongeldige aanvraag." }); }
-
-  if (payload.password !== gate) return json(401, { error: "Onjuiste toegangscode." });
 
   const { content, today, defYear } = payload;
   let model = payload.model;
@@ -75,13 +77,37 @@ export const handler = async (event) => {
   }
   if (!ALLOWED_MODELS.has(model)) model = "claude-opus-4-8";
 
-  const safeToday = /^\d{4}-\d{2}-\d{2}$/.test(today || "") ? today : new Date().toISOString().slice(0, 10);
-  const safeYear = /^\d{4}$/.test(String(defYear || "")) ? String(defYear) : safeToday.slice(0, 4);
+  const db = adminClient();
+  const authHeader = event.headers.authorization || "";
+  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+
+  let userId = null;
+  if (token) {
+    const { data, error } = await db.auth.getUser(token);
+    if (error || !data?.user) return json(401, { error: "Je sessie is verlopen. Log opnieuw in." });
+    userId = data.user.id;
+    const { data: balance, error: spendErr } = await db.rpc("spend_credit", { p_user: userId });
+    if (spendErr) return json(500, { error: "Kon je credits niet verwerken." });
+    if (balance === null) return json(402, { error: "Je hebt geen credits meer. Koop een bundel om door te gaan." });
+  } else {
+    const ip = (event.headers["x-nf-client-connection-ip"] ||
+      (event.headers["x-forwarded-for"] || "").split(",")[0] || "onbekend").trim();
+    const { data: count, error: freeErr } = await db.rpc("bump_free_use", { p_ip: ip });
+    if (freeErr) return json(500, { error: "Kon het gratis gebruik niet verwerken." });
+    if (count > FREE_LIMIT_PER_DAY) {
+      return json(402, { error: "Je hebt je gratis analyses voor vandaag gebruikt. Log in en koop credits om door te gaan." });
+    }
+  }
+
+  const refund = async () => { if (userId) await db.rpc("add_credits", { p_user: userId, p_n: 1 }); };
+
+  const today2 = /^\d{4}-\d{2}-\d{2}$/.test(today || "") ? today : new Date().toISOString().slice(0, 10);
+  const year2 = /^\d{4}$/.test(String(defYear || "")) ? String(defYear) : today2.slice(0, 4);
 
   const body = {
     model,
     max_tokens: 16000,
-    system: buildSystem(safeToday, safeYear),
+    system: buildSystem(today2, year2),
     messages: [{ role: "user", content: [...content, { type: "text", text: "Haal alle afspraken eruit en geef ze terug volgens het schema." }] }],
     output_config: { format: { type: "json_schema", schema: EVENT_SCHEMA } }
   };
@@ -90,32 +116,36 @@ export const handler = async (event) => {
   try {
     resp = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": key,
-        "anthropic-version": "2023-06-01"
-      },
+      headers: { "content-type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01" },
       body: JSON.stringify(body)
     });
-  } catch (e) {
+  } catch {
+    await refund();
     return json(502, { error: "Kon de analyse-service niet bereiken." });
   }
 
   if (!resp.ok) {
+    await refund();
     let detail = `${resp.status}`;
     try { const e = await resp.json(); detail = e.error?.message || detail; } catch {}
     return json(502, { error: "Analyse mislukt: " + detail });
   }
 
   const data = await resp.json();
-  if (data.stop_reason === "refusal") return json(422, { error: "De analyse is geweigerd voor dit materiaal." });
+  if (data.stop_reason === "refusal") { await refund(); return json(422, { error: "De analyse is geweigerd voor dit materiaal." }); }
 
   const textBlock = (data.content || []).find(b => b.type === "text");
-  if (!textBlock) return json(502, { error: "Geen leesbaar antwoord ontvangen." });
+  if (!textBlock) { await refund(); return json(502, { error: "Geen leesbaar antwoord ontvangen." }); }
 
   let parsed;
   try { parsed = JSON.parse(textBlock.text); }
-  catch { return json(502, { error: "Antwoord kon niet worden gelezen." }); }
+  catch { await refund(); return json(502, { error: "Antwoord kon niet worden gelezen." }); }
 
-  return json(200, { events: parsed.events || [], notes: parsed.notes || "" });
+  let remaining = null;
+  if (userId) {
+    const { data: row } = await db.from("credits").select("balance").eq("user_id", userId).single();
+    remaining = row?.balance ?? null;
+  }
+
+  return json(200, { events: parsed.events || [], notes: parsed.notes || "", credits: remaining });
 };
