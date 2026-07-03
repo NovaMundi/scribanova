@@ -1,4 +1,4 @@
-// Achtergrond-analyse: mag tot 15 minuten duren, dus geen 504 meer bij trage modellen.
+// Achtergrond-analyse (V2-functie): mag tot 15 minuten duren, dus geen 504 meer.
 // Schrijft het resultaat naar Netlify Blobs onder de jobId; de pagina haalt het op via analyze-result.
 // Env: ANTHROPIC_API_KEY, IMPORTAGENDA_PASSWORD.
 
@@ -44,23 +44,24 @@ function buildSystem(today, defYear) {
     "Laat onbekende velden leeg ('') in plaats van te gokken. Verzin geen afspraken die er niet staan.";
 }
 
-export const handler = async (event) => {
+export default async (req) => {
   let payload = {};
-  try { payload = JSON.parse(event.body || "{}"); } catch {}
+  try { payload = await req.json(); } catch {}
   const jobId = payload.jobId;
-  if (!jobId) return { statusCode: 400 };
+  if (!jobId) return new Response("Geen jobId", { status: 400 });
 
-  const store = getStore("analyses");
-  const fail = async (error) => { await store.setJSON(jobId, { status: "error", error }); };
+  const store = getStore("analyses", { consistency: "strong" });
+  const fail = (error) => store.setJSON(jobId, { status: "error", error });
+  const done = (status) => new Response(null, { status });
 
   const key = process.env.ANTHROPIC_API_KEY;
   const gate = process.env.IMPORTAGENDA_PASSWORD;
-  if (!key) { await fail("Server mist de API-sleutel (ANTHROPIC_API_KEY)."); return { statusCode: 202 }; }
-  if (!gate) { await fail("Server mist de toegangscode (IMPORTAGENDA_PASSWORD)."); return { statusCode: 202 }; }
-  if (payload.password !== gate) { await fail("Onjuiste toegangscode."); return { statusCode: 202 }; }
+  if (!key) { await fail("Server mist de API-sleutel (ANTHROPIC_API_KEY)."); return done(202); }
+  if (!gate) { await fail("Server mist de toegangscode (IMPORTAGENDA_PASSWORD)."); return done(202); }
+  if (payload.password !== gate) { await fail("Onjuiste toegangscode."); return done(202); }
 
   const content = payload.content;
-  if (!Array.isArray(content) || content.length === 0) { await fail("Geen inhoud om te analyseren."); return { statusCode: 202 }; }
+  if (!Array.isArray(content) || content.length === 0) { await fail("Geen inhoud om te analyseren."); return done(202); }
 
   let model = payload.model;
   if (!ALLOWED_MODELS.has(model)) model = "claude-sonnet-4-6";
@@ -86,19 +87,19 @@ export const handler = async (event) => {
       let detail = `${resp.status}`;
       try { const e = await resp.json(); detail = e.error?.message || detail; } catch {}
       await fail("Analyse mislukt: " + detail);
-      return { statusCode: 202 };
+      return done(202);
     }
     const data = await resp.json();
-    if (data.stop_reason === "refusal") { await fail("De analyse is geweigerd voor dit materiaal."); return { statusCode: 202 }; }
+    if (data.stop_reason === "refusal") { await fail("De analyse is geweigerd voor dit materiaal."); return done(202); }
     const textBlock = (data.content || []).find(b => b.type === "text");
-    if (!textBlock) { await fail("Geen leesbaar antwoord ontvangen."); return { statusCode: 202 }; }
+    if (!textBlock) { await fail("Geen leesbaar antwoord ontvangen."); return done(202); }
     let parsed;
     try { parsed = JSON.parse(textBlock.text); }
-    catch { await fail("Antwoord kon niet worden gelezen."); return { statusCode: 202 }; }
+    catch { await fail("Antwoord kon niet worden gelezen."); return done(202); }
     await store.setJSON(jobId, { status: "done", events: parsed.events || [], notes: parsed.notes || "" });
   } catch (e) {
     await fail("Kon de analyse-service niet bereiken.");
   }
 
-  return { statusCode: 202 };
+  return done(202);
 };

@@ -1,25 +1,19 @@
-// Geeft het resultaat van een achtergrond-analyse terug, of {status:"pending"} als het nog loopt.
+// Geeft het resultaat van een achtergrond-analyse terug, of {status:"pending"} als het nog loopt. V2-functie.
 
 import { getStore } from "@netlify/blobs";
 
-const json = (statusCode, obj) => ({
-  statusCode,
-  headers: { "content-type": "application/json" },
-  body: JSON.stringify(obj)
-});
+export default async (req) => {
+  const jobId = new URL(req.url).searchParams.get("jobId");
+  if (!jobId) return Response.json({ status: "error", error: "Geen jobId." }, { status: 400 });
 
-export const handler = async (event) => {
-  const jobId = event.queryStringParameters?.jobId;
-  if (!jobId) return json(400, { status: "error", error: "Geen jobId." });
-
-  const store = getStore("analyses");
+  const store = getStore("analyses", { consistency: "strong" });
   let result;
   try {
-    result = await store.get(jobId, { type: "json", consistency: "strong" });
+    result = await store.get(jobId, { type: "json" });
   } catch {
-    return json(200, { status: "pending" });
+    return Response.json({ status: "pending" });
   }
 
-  if (!result) return json(200, { status: "pending" });
-  return json(200, result);
+  if (!result) return Response.json({ status: "pending" });
+  return Response.json(result);
 };
