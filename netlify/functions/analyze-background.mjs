@@ -1,10 +1,7 @@
-// Achtergrond-analyse (V2-functie): mag tot 15 minuten duren, dus geen 504 meer.
-// Schrijft het resultaat naar Netlify Blobs onder de jobId; de pagina haalt het op via analyze-result.
-// Env: ANTHROPIC_API_KEY, IMPORTAGENDA_PASSWORD.
+// Achtergrond-worker (V2): krijgt alleen een jobId, leest de invoer uit Blobs, doet de analyse
+// (mag tot 15 min duren) en schrijft het resultaat naar Blobs. Env: ANTHROPIC_API_KEY.
 
 import { getStore } from "@netlify/blobs";
-
-const ALLOWED_MODELS = new Set(["claude-opus-4-8", "claude-sonnet-4-6", "claude-haiku-4-5"]);
 
 const EVENT_SCHEMA = {
   type: "object",
@@ -51,23 +48,19 @@ export default async (req) => {
   if (!jobId) return new Response("Geen jobId", { status: 400 });
 
   const store = getStore("analyses", { consistency: "strong" });
-  const fail = (error) => store.setJSON(jobId, { status: "error", error });
-  const done = (status) => new Response(null, { status });
+  const fail = (error) => store.setJSON(`result:${jobId}`, { status: "error", error });
+  const done = () => new Response(null, { status: 202 });
 
   const key = process.env.ANTHROPIC_API_KEY;
-  const gate = process.env.IMPORTAGENDA_PASSWORD;
-  if (!key) { await fail("Server mist de API-sleutel (ANTHROPIC_API_KEY)."); return done(202); }
-  if (!gate) { await fail("Server mist de toegangscode (IMPORTAGENDA_PASSWORD)."); return done(202); }
-  if (payload.password !== gate) { await fail("Onjuiste toegangscode."); return done(202); }
+  if (!key) { await fail("Server mist de API-sleutel (ANTHROPIC_API_KEY)."); return done(); }
 
-  const content = payload.content;
-  if (!Array.isArray(content) || content.length === 0) { await fail("Geen inhoud om te analyseren."); return done(202); }
+  const input = await store.get(`input:${jobId}`, { type: "json" });
+  if (!input || !Array.isArray(input.content)) { await fail("Geen invoer gevonden."); return done(); }
 
-  let model = payload.model;
-  if (!ALLOWED_MODELS.has(model)) model = "claude-sonnet-4-6";
-
-  const today = /^\d{4}-\d{2}-\d{2}$/.test(payload.today || "") ? payload.today : new Date().toISOString().slice(0, 10);
-  const year = /^\d{4}$/.test(String(payload.defYear || "")) ? String(payload.defYear) : today.slice(0, 4);
+  const content = input.content;
+  const model = input.model || "claude-sonnet-4-6";
+  const today = /^\d{4}-\d{2}-\d{2}$/.test(input.today || "") ? input.today : new Date().toISOString().slice(0, 10);
+  const year = /^\d{4}$/.test(String(input.defYear || "")) ? String(input.defYear) : today.slice(0, 4);
 
   const body = {
     model,
@@ -87,19 +80,26 @@ export default async (req) => {
       let detail = `${resp.status}`;
       try { const e = await resp.json(); detail = e.error?.message || detail; } catch {}
       await fail("Analyse mislukt: " + detail);
-      return done(202);
+    } else {
+      const data = await resp.json();
+      if (data.stop_reason === "refusal") {
+        await fail("De analyse is geweigerd voor dit materiaal.");
+      } else {
+        const textBlock = (data.content || []).find(b => b.type === "text");
+        if (!textBlock) {
+          await fail("Geen leesbaar antwoord ontvangen.");
+        } else {
+          let parsed = null;
+          try { parsed = JSON.parse(textBlock.text); } catch {}
+          if (!parsed) await fail("Antwoord kon niet worden gelezen.");
+          else await store.setJSON(`result:${jobId}`, { status: "done", events: parsed.events || [], notes: parsed.notes || "" });
+        }
+      }
     }
-    const data = await resp.json();
-    if (data.stop_reason === "refusal") { await fail("De analyse is geweigerd voor dit materiaal."); return done(202); }
-    const textBlock = (data.content || []).find(b => b.type === "text");
-    if (!textBlock) { await fail("Geen leesbaar antwoord ontvangen."); return done(202); }
-    let parsed;
-    try { parsed = JSON.parse(textBlock.text); }
-    catch { await fail("Antwoord kon niet worden gelezen."); return done(202); }
-    await store.setJSON(jobId, { status: "done", events: parsed.events || [], notes: parsed.notes || "" });
   } catch (e) {
     await fail("Kon de analyse-service niet bereiken.");
   }
 
-  return done(202);
+  try { await store.delete(`input:${jobId}`); } catch {}
+  return done();
 };

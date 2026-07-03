@@ -337,7 +337,7 @@ const statusEl = document.getElementById('status');
 function setStatus(msg, cls) { statusEl.textContent = msg; statusEl.className = cls || ''; }
 
 // ---------- analyse (achtergrond + polling, geen tijdslimiet) ----------
-const START_URL = '/.netlify/functions/analyze-background';
+const START_URL = '/.netlify/functions/analyze-start';
 const RESULT_URL = '/.netlify/functions/analyze-result';
 
 document.getElementById('analyze').addEventListener('click', analyze);
@@ -371,10 +371,8 @@ async function analyze() {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ jobId, model: elModel.value, today, defYear, content, password: elPw.value })
     });
-    if (!start.ok && start.status !== 202) {
-      const e = await start.json().catch(() => ({}));
-      throw new Error(e.error || `Kon de analyse niet starten (${start.status}).`);
-    }
+    const sdata = await start.json().catch(() => ({}));
+    if (!start.ok) throw new Error(sdata.error || `Kon de analyse niet starten (${start.status}).`);
 
     const data = await pollResult(jobId);
     if (data.status === 'error') throw new Error(data.error || 'Analyse mislukt.');

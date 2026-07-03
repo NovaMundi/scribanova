@@ -9,7 +9,7 @@ export default async (req) => {
   const store = getStore("analyses", { consistency: "strong" });
   let result;
   try {
-    result = await store.get(jobId, { type: "json" });
+    result = await store.get(`result:${jobId}`, { type: "json" });
   } catch {
     return Response.json({ status: "pending" });
   }
