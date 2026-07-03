@@ -336,10 +336,13 @@ async function excelToText(file) {
 const statusEl = document.getElementById('status');
 function setStatus(msg, cls) { statusEl.textContent = msg; statusEl.className = cls || ''; }
 
-// ---------- analyse ----------
-const ANALYZE_URL = '/.netlify/functions/analyze';
+// ---------- analyse (achtergrond + polling, geen tijdslimiet) ----------
+const START_URL = '/.netlify/functions/analyze-background';
+const RESULT_URL = '/.netlify/functions/analyze-result';
 
 document.getElementById('analyze').addEventListener('click', analyze);
+
+function uuid() { return crypto.randomUUID ? crypto.randomUUID() : (Date.now() + '-' + Math.random().toString(36).slice(2)); }
 
 async function analyze() {
   const pasted = document.getElementById('paste').value.trim();
@@ -355,35 +358,32 @@ async function analyze() {
 
   const content = [];
   for (const a of attachments) {
-    if (a.kind === 'image') {
-      content.push({ type: "image", source: { type: "base64", media_type: a.mediaType, data: a.data } });
-    } else if (a.kind === 'pdf') {
-      content.push({ type: "document", source: { type: "base64", media_type: "application/pdf", data: a.data } });
-    } else if (a.kind === 'text') {
-      content.push({ type: "text", text: `Bestand "${a.name}":\n\n${a.data}` });
-    }
+    if (a.kind === 'image') content.push({ type: "image", source: { type: "base64", media_type: a.mediaType, data: a.data } });
+    else if (a.kind === 'pdf') content.push({ type: "document", source: { type: "base64", media_type: "application/pdf", data: a.data } });
+    else if (a.kind === 'text') content.push({ type: "text", text: `Bestand "${a.name}":\n\n${a.data}` });
   }
   if (pasted) content.push({ type: "text", text: `Geplakt rooster:\n\n${pasted}` });
 
+  const jobId = uuid();
   try {
-    const resp = await fetch(ANALYZE_URL, {
+    const start = await fetch(START_URL, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ model: elModel.value, today, defYear, content, password: elPw.value })
+      body: JSON.stringify({ jobId, model: elModel.value, today, defYear, content, password: elPw.value })
     });
+    if (!start.ok && start.status !== 202) {
+      const e = await start.json().catch(() => ({}));
+      throw new Error(e.error || `Kon de analyse niet starten (${start.status}).`);
+    }
 
-    const data = await resp.json().catch(() => ({}));
-    if (!resp.ok) throw new Error(data.error || `Fout ${resp.status}`);
+    const data = await pollResult(jobId);
+    if (data.status === 'error') throw new Error(data.error || 'Analyse mislukt.');
 
     const events = data.events || [];
     renderTable(events);
     const notesEl = document.getElementById('notes');
-    if (data.notes && data.notes.trim()) {
-      notesEl.textContent = 'Opmerking: ' + data.notes.trim();
-      notesEl.classList.remove('hidden');
-    } else {
-      notesEl.classList.add('hidden');
-    }
+    if (data.notes && data.notes.trim()) { notesEl.textContent = 'Opmerking: ' + data.notes.trim(); notesEl.classList.remove('hidden'); }
+    else notesEl.classList.add('hidden');
     document.getElementById('resultcard').classList.remove('hidden');
     setStatus(`Klaar. ${events.length} afspra${events.length === 1 ? 'ak' : 'ken'} gevonden. Controleer en pas aan waar nodig.`, 'ok');
   } catch (err) {
@@ -391,6 +391,22 @@ async function analyze() {
   } finally {
     btn.disabled = false;
   }
+}
+
+async function pollResult(jobId, maxMs = 240000, intervalMs = 2000) {
+  const started = Date.now();
+  let dots = 0;
+  while (Date.now() - started < maxMs) {
+    await new Promise(r => setTimeout(r, intervalMs));
+    dots = (dots + 1) % 4;
+    setStatus('Bezig met analyseren' + '.'.repeat(dots || 1), '');
+    let resp;
+    try { resp = await fetch(`${RESULT_URL}?jobId=${encodeURIComponent(jobId)}`); }
+    catch { continue; }
+    const data = await resp.json().catch(() => ({}));
+    if (data && data.status && data.status !== 'pending') return data;
+  }
+  throw new Error('De analyse duurde te lang. Probeer het opnieuw of kies een sneller model.');
 }
 
 // ---------- tabel ----------
