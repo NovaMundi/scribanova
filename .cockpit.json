@@ -1,6 +1,6 @@
 {
   "health": "green",
   "stage": "live",
-  "next": "Live-check op scribanova.com; daarna eigen propositie/prijzen scherper neerzetten",
-  "note": "Hero-video geregenereerd met zichtbare beweging (pulserende filamenten, naadloze loop via identiek start/eindframe); live via Netlify"
+  "next": "ANTHROPIC_API_KEY-check op Netlify voor live Ledger-generatie; daarna eerste insights-artikelen uitbouwen + backlinks",
+  "note": "Volledige flagship-herbouw: 'Living Ledger' homepage (genereert live mini-merkkit uit 1 zin) in Scribe inkt/papier-stijl, + service-pagina's, insights-blog, JSON-LD/sitemap/llms.txt, Netlify-functie met Claude API"
 }
