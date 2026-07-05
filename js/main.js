@@ -122,6 +122,7 @@
       heroVideo.removeAttribute('autoplay');
       heroVideo.pause();
     } else {
+      heroVideo.playbackRate = 0.65; // calm, ambient drift that matches the parallax pace
       var showVideo = function () { heroVideo.classList.add('loaded'); };
       if (heroVideo.readyState >= 3) showVideo();
       else heroVideo.addEventListener('canplay', showVideo, { once: true });
@@ -135,8 +136,8 @@
     var px = 0, py = 0, tx = 0, ty = 0, parallaxRunning = false;
     hero.addEventListener('mousemove', function (e) {
       var r = hero.getBoundingClientRect();
-      tx = ((e.clientX - r.left) / r.width - 0.5) * 26;
-      ty = ((e.clientY - r.top) / r.height - 0.5) * 26;
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 48;
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 48;
       if (!parallaxRunning) { parallaxRunning = true; pTick(); }
     }, { passive: true });
     var pTick = function () {
