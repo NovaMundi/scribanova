@@ -26,16 +26,31 @@ const KIT_SCHEMA = {
         },
         required: ["tag", "line"]
       }
-    }
+    },
+    audience: { type: "array", items: { type: "string" }, description: "Exactly 2 sharp observations about who the real customer is and what they actually buy, each under 16 words" },
+    heroLine: { type: "string", description: "One landing-page opening headline for this business, under 10 words, no em-dash" },
+    ad: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        headline: { type: "string", description: "A sample ad headline, under 8 words" },
+        body: { type: "string", description: "Sample ad body copy, 1-2 sentences, under 25 words, no em-dash" }
+      },
+      required: ["headline", "body"]
+    },
+    moves: { type: "array", items: { type: "string" }, description: "Exactly 3 concrete first marketing moves for this business, imperative voice, each under 14 words" }
   },
-  required: ["source", "tagline", "voice", "palette", "swatches", "frames"]
+  required: ["source", "tagline", "voice", "palette", "swatches", "frames", "audience", "heroLine", "ad", "moves"]
 };
 
 const SYSTEM =
   "You are Scriba Nova, a premium studio that turns one brief into marketing and product. " +
-  "A visitor describes their business in one sentence. Draft a tiny, tasteful, bespoke brand kit for it. " +
-  "Be specific to their business, confident, and warm. Never use em-dashes. Avoid buzzwords like leverage, seamless, unlock, revolutionize, cutting-edge, next-level. " +
-  "Pick four hex colors that genuinely suit the business. Keep every line short. Return only the structured object.";
+  "A visitor describes their business in one sentence. Draft a compact, tasteful, genuinely useful starter brand kit for it. " +
+  "Be specific to their business, confident, and warm. Concrete beats clever: name their customer, their objection, their channel. " +
+  "Never use em-dashes. Avoid buzzwords like leverage, seamless, unlock, revolutionize, cutting-edge, next-level, elevate, empower. " +
+  "Pick four hex colors that genuinely suit this specific business, not generic tech blue unless it truly fits. " +
+  "The audience observations must feel like an insider wrote them. The moves must be doable this month by a small team. " +
+  "Keep every line short. Return only the structured object.";
 
 const json = (statusCode, obj) => ({
   statusCode,
@@ -58,7 +73,7 @@ export const handler = async (event) => {
 
   const body = {
     model: "claude-haiku-4-5",
-    max_tokens: 700,
+    max_tokens: 1200,
     temperature: 0.85,
     system: SYSTEM,
     messages: [{ role: "user", content: [{ type: "text", text: "Business: " + prompt + "\n\nDraft the brand kit." }] }],
@@ -95,7 +110,11 @@ export const handler = async (event) => {
     voice: Array.isArray(parsed.voice) ? parsed.voice.slice(0, 3).map(String) : [],
     palette: (parsed.palette || "Bespoke").toString(),
     swatches: Array.isArray(parsed.swatches) ? parsed.swatches.slice(0, 4).map(String) : [],
-    frames: Array.isArray(parsed.frames) ? parsed.frames.slice(0, 3).map(f => ({ tag: String(f.tag || ""), line: String(f.line || "") })) : []
+    frames: Array.isArray(parsed.frames) ? parsed.frames.slice(0, 3).map(f => ({ tag: String(f.tag || ""), line: String(f.line || "") })) : [],
+    audience: Array.isArray(parsed.audience) ? parsed.audience.slice(0, 2).map(String) : [],
+    heroLine: (parsed.heroLine || "").toString(),
+    ad: parsed.ad && typeof parsed.ad === "object" ? { headline: String(parsed.ad.headline || ""), body: String(parsed.ad.body || "") } : null,
+    moves: Array.isArray(parsed.moves) ? parsed.moves.slice(0, 3).map(String) : []
   };
 
   if (!kit.tagline || kit.swatches.length < 4 || kit.frames.length < 3) return json(502, { error: "incomplete" });
