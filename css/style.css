@@ -246,12 +246,41 @@ p  { max-width: 62ch; }
   overflow: hidden;
 }
 
+.hero__media {
+  position: absolute;
+  inset: -6%;
+  z-index: 0;
+  overflow: hidden;
+  will-change: transform;
+}
+.hero__video,
+.hero__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.hero__poster { opacity: 1; }
+.hero__video.loaded { opacity: 1; }
+.hero__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 70% at 20% 45%, rgba(5,8,15,.92), transparent 60%),
+    linear-gradient(90deg, var(--bg) 4%, transparent 55%);
+  pointer-events: none;
+}
+
 #heroCanvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 1;
 }
 
 .hero::before {

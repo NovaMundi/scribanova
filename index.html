@@ -61,6 +61,12 @@
 
   <!-- ── Hero ─────────────────────────────────────────────── -->
   <section class="hero" aria-label="Hero">
+    <div class="hero__media" aria-hidden="true">
+      <img class="hero__poster" src="assets/hero-a.png" alt="" />
+      <video class="hero__video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-a.png">
+        <source src="assets/hero.mp4" type="video/mp4" />
+      </video>
+    </div>
     <canvas id="heroCanvas" aria-hidden="true"></canvas>
     <div class="container">
       <div class="hero__content">

@@ -115,6 +115,38 @@
     });
   }
 
+  /* ── Hero video fade-in ────────────────────────────────── */
+  var heroVideo = document.getElementById('heroVideo');
+  if (heroVideo) {
+    if (reducedMotion) {
+      heroVideo.removeAttribute('autoplay');
+      heroVideo.pause();
+    } else {
+      var showVideo = function () { heroVideo.classList.add('loaded'); };
+      if (heroVideo.readyState >= 3) showVideo();
+      else heroVideo.addEventListener('canplay', showVideo, { once: true });
+    }
+  }
+
+  /* ── Hero parallax drift ───────────────────────────────── */
+  var heroMedia = document.querySelector('.hero__media');
+  var hero = document.querySelector('.hero');
+  if (heroMedia && hero && !reducedMotion && window.matchMedia('(pointer: fine)').matches) {
+    var px = 0, py = 0, tx = 0, ty = 0, parallaxRunning = false;
+    hero.addEventListener('mousemove', function (e) {
+      var r = hero.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 26;
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 26;
+      if (!parallaxRunning) { parallaxRunning = true; pTick(); }
+    }, { passive: true });
+    var pTick = function () {
+      px += (tx - px) * 0.06;
+      py += (ty - py) * 0.06;
+      heroMedia.style.transform = 'translate(' + px + 'px,' + py + 'px) scale(1.04)';
+      requestAnimationFrame(pTick);
+    };
+  }
+
   /* ── Hero particle network ─────────────────────────────── */
   var canvas = document.getElementById('heroCanvas');
   if (canvas && !reducedMotion) {
