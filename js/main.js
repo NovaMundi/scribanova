@@ -122,7 +122,7 @@
       heroVideo.removeAttribute('autoplay');
       heroVideo.pause();
     } else {
-      heroVideo.playbackRate = 0.65; // calm, ambient drift that matches the parallax pace
+      heroVideo.playbackRate = 0.85; // slight slowdown keeps the drift calm without freezing it
       var showVideo = function () { heroVideo.classList.add('loaded'); };
       if (heroVideo.readyState >= 3) showVideo();
       else heroVideo.addEventListener('canplay', showVideo, { once: true });
