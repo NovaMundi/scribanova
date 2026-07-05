@@ -55,7 +55,7 @@
     return s || 'your business';
   }
   function splitPlace(subject) {
-    var m = subject.match(/^(.*?)\s+(?:in|for|based in|serving)\s+(.+)$/i);
+    var m = subject.match(/^(.*?)\s+(?:in|based in|located in)\s+(.+)$/i);
     if (m) return { core: m[1].trim(), place: m[2].trim() };
     return { core: subject, place: '' };
   }
@@ -105,7 +105,7 @@
       return '<div class="draft__frame"><b>' + esc(f.tag) + '</b><p>' + esc(f.line) + '</p></div>';
     }).join('');
 
-    var briefLink = '/support/#brief';
+    var briefLink = '/support/?from=' + encodeURIComponent(d.source) + '#brief';
     out.innerHTML =
       '<div class="draft">' +
         '<div class="draft__row"><div class="draft__label">Tagline</div><div class="draft__tagline">' + esc(d.tagline) + '</div></div>' +
@@ -116,7 +116,7 @@
       '<div class="draft__seal">' +
         '<div class="stamp"><span class="wax" aria-hidden="true"></span>Drafted for &ldquo;' + esc(d.source) + '&rdquo; in ' + seconds + 's</div>' +
         '<div class="draft__actions">' +
-          '<a class="btn btn-ox" href="' + briefLink + '?from=' + encodeURIComponent(d.source) + '">Bring the real brief</a>' +
+          '<a class="btn btn-ox" href="' + briefLink + '">Bring the real brief</a>' +
         '</div>' +
       '</div>';
     out.classList.add('show');
