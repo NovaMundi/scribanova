@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scriba Nova | AI Marketing &amp; App Development</title>
-  <meta name="description" content="Scriba Nova delivers intelligent marketing solutions and world-class app development powered by AI — helping businesses grow smarter, faster." />
+  <meta name="description" content="Scriba Nova builds intelligent marketing engines and world-class apps powered by AI. We help ambitious brands grow smarter, faster, everywhere." />
   <meta name="keywords" content="AI marketing solutions, app development, iOS app, Android app, digital marketing, growth marketing, Scriba Nova" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://scribanova.com/" />
@@ -13,20 +13,22 @@
   <meta property="og:type"        content="website" />
   <meta property="og:url"         content="https://scribanova.com/" />
   <meta property="og:title"       content="Scriba Nova | AI Marketing &amp; App Development" />
-  <meta property="og:description" content="Intelligent marketing solutions and world-class app development powered by AI." />
+  <meta property="og:description" content="Intelligent marketing engines and world-class apps, powered by AI." />
   <meta property="og:image"       content="https://scribanova.com/og-image.png" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="Scriba Nova | AI Marketing &amp; App Development" />
-  <meta name="twitter:description" content="Intelligent marketing solutions and world-class app development powered by AI." />
+  <meta name="twitter:description" content="Intelligent marketing engines and world-class apps, powered by AI." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+
+  <div class="cursor-glow" aria-hidden="true"></div>
 
   <!-- ── Navigation ───────────────────────────────────────── -->
   <header>
@@ -36,12 +38,12 @@
 
         <ul class="nav__links">
           <li><a href="#services">Services</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="#why">Why Us</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="support.html">Support</a></li>
         </ul>
 
-        <a href="#contact" class="btn btn-primary nav__cta">Get in Touch</a>
+        <a href="#contact" class="btn btn-primary nav__cta">Start a Project</a>
 
         <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -50,119 +52,133 @@
 
       <div class="nav__mobile" id="mobileNav" aria-label="Mobile navigation">
         <a href="#services">Services</a>
-        <a href="#about">About</a>
+        <a href="#why">Why Us</a>
         <a href="#contact">Contact</a>
         <a href="support.html">Support</a>
-        <a href="#contact" class="btn btn-primary" style="margin:1rem 1.5rem 1.5rem;text-align:center;">Get in Touch</a>
       </div>
     </nav>
   </header>
 
   <!-- ── Hero ─────────────────────────────────────────────── -->
   <section class="hero" aria-label="Hero">
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
     <div class="container">
       <div class="hero__content">
-        <span class="label">AI-Powered Growth</span>
-        <h1>Intelligent Marketing.<br /><em>Exceptional Apps.</em></h1>
+        <h1>
+          <span class="line"><span>We build what's</span></span>
+          <span class="line"><span><em>next.</em></span></span>
+        </h1>
         <p class="hero__sub">
-          Scriba Nova combines cutting-edge artificial intelligence with strategic expertise to help businesses reach wider audiences, convert smarter, and launch apps that users love.
+          Scriba Nova engineers intelligent marketing systems and exceptional apps — where artificial intelligence meets craftsmanship, and ambition meets execution.
         </p>
         <div class="hero__actions">
-          <a href="#services" class="btn btn-primary">Explore Services</a>
-          <a href="#contact"  class="btn btn-outline">Get in Touch</a>
+          <a href="#services" class="btn btn-primary">Explore Our Work</a>
+          <a href="#contact"  class="btn btn-outline">Start a Conversation</a>
         </div>
-        <div class="hero__badge">Available worldwide &mdash; International clients welcome</div>
       </div>
     </div>
+    <div class="hero__scroll" aria-hidden="true">Scroll</div>
   </section>
 
-  <!-- ── Stats ─────────────────────────────────────────────── -->
-  <div class="stats" aria-label="Key figures">
-    <div class="container">
-      <div class="stats__grid">
-        <div class="stats__item">
-          <strong>AI&#8209;First</strong>
-          <p>Every solution powered by artificial intelligence</p>
-        </div>
-        <div class="stats__item">
-          <strong>iOS &amp; Android</strong>
-          <p>Full-cycle app development for both platforms</p>
-        </div>
-        <div class="stats__item">
-          <strong>End&#8209;to&#8209;End</strong>
-          <p>From strategy through App Store submission</p>
-        </div>
-      </div>
+  <!-- ── Marquee ──────────────────────────────────────────── -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>AI-Driven Growth</span>
+      <span>App Development</span>
+      <span>Marketing Intelligence</span>
+      <span>iOS &amp; Android</span>
+      <span>Global Reach</span>
+      <span>AI-Driven Growth</span>
+      <span>App Development</span>
+      <span>Marketing Intelligence</span>
+      <span>iOS &amp; Android</span>
+      <span>Global Reach</span>
     </div>
   </div>
 
   <!-- ── Services ──────────────────────────────────────────── -->
-  <section class="services" id="services" aria-labelledby="services-heading">
+  <section id="services" aria-labelledby="services-heading">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="label">What We Do</span>
-        <h2 id="services-heading">Two disciplines.<br />One cohesive vision.</h2>
-        <p>We specialize in two areas that work best when they work together — helping you grow your audience and deliver outstanding digital experiences.</p>
+        <h2 id="services-heading">Two disciplines.<br />One obsession: growth.</h2>
+        <p>Marketing that thinks and apps that perform — engineered together, so every launch lands and every campaign converts.</p>
       </div>
 
       <div class="services__grid">
-
-        <!-- Card 1 -->
-        <article class="service-card">
-          <div class="service-card__icon" aria-hidden="true">📈</div>
+        <article class="service-card reveal">
+          <div class="service-card__num">/ 01</div>
           <h3>Smart Marketing Solutions</h3>
-          <p>We design and execute AI-driven marketing strategies that cut through the noise and deliver measurable results — wherever your audience is.</p>
+          <p>AI-driven marketing systems that find your audience, learn what moves them, and scale what works — with surgical precision.</p>
           <ul class="service-features">
             <li>AI-powered audience targeting &amp; segmentation</li>
             <li>Data-driven campaign strategy &amp; execution</li>
             <li>Performance analytics &amp; continuous optimization</li>
-            <li>Content strategy &amp; automated personalization</li>
+            <li>Automated content personalization at scale</li>
             <li>App Store Optimization (ASO)</li>
           </ul>
         </article>
 
-        <!-- Card 2 -->
-        <article class="service-card">
-          <div class="service-card__icon" aria-hidden="true">📱</div>
+        <article class="service-card reveal" data-delay="1">
+          <div class="service-card__num">/ 02</div>
           <h3>App Development</h3>
-          <p>From concept to App Store approval — we build polished, performant mobile applications for iOS and Android that stand out in crowded marketplaces.</p>
+          <p>From first sketch to App Store feature — polished, performant applications built to international standards and made to be talked about.</p>
           <ul class="service-features">
-            <li>iOS &amp; Android native and cross-platform development</li>
-            <li>UX/UI design with international standards</li>
+            <li>iOS &amp; Android — native and cross-platform</li>
+            <li>UX/UI design that earns loyalty</li>
             <li>App Store &amp; Google Play submission &amp; compliance</li>
             <li>Ongoing maintenance, updates &amp; monitoring</li>
             <li>Seamless back-end integration &amp; APIs</li>
           </ul>
         </article>
-
       </div>
     </div>
   </section>
 
-  <!-- ── Why Scriba Nova ────────────────────────────────────── -->
-  <section class="why" id="about" aria-labelledby="why-heading">
+  <!-- ── Numbers ───────────────────────────────────────────── -->
+  <div class="numbers" aria-label="Key figures">
     <div class="container">
-      <div class="section-header">
+      <div class="numbers__grid">
+        <div class="numbers__item reveal">
+          <strong><span data-count="100" data-suffix="%">0%</span></strong>
+          <p>AI-first — intelligence embedded in every solution we ship</p>
+        </div>
+        <div class="numbers__item reveal" data-delay="1">
+          <strong><em>2</em> platforms</strong>
+          <p>Full-cycle development for iOS and Android</p>
+        </div>
+        <div class="numbers__item reveal" data-delay="2">
+          <strong><span data-count="24" data-suffix="h">0h</span></strong>
+          <p>Response time — we move at the speed of your ambition</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Why ───────────────────────────────────────────────── -->
+  <section id="why" aria-labelledby="why-heading">
+    <div class="container">
+      <div class="section-header reveal">
         <span class="label">Why Scriba Nova</span>
-        <h2 id="why-heading">Built for businesses<br />that think ahead.</h2>
-        <p>We operate at the intersection of technology and creativity — with a relentless focus on what drives real growth.</p>
+        <h2 id="why-heading">Built for brands<br />that refuse average.</h2>
+        <p>We operate at the intersection of technology and craft — with a relentless focus on what actually moves the needle.</p>
       </div>
 
       <div class="why__grid">
-        <div class="why-card">
+        <div class="why-card reveal">
           <div class="why-card__num">01</div>
-          <h3>AI&#8209;First Approach</h3>
-          <p>Artificial intelligence isn't an add-on — it's embedded in every strategy and workflow we design, giving your brand a sustainable competitive edge.</p>
+          <h3>AI-First, Always</h3>
+          <p>Artificial intelligence isn't a feature we add — it's the foundation we build on. Every strategy, every workflow, every decision is sharpened by it.</p>
         </div>
-        <div class="why-card">
+        <div class="why-card reveal" data-delay="1">
           <div class="why-card__num">02</div>
-          <h3>International Reach</h3>
-          <p>We work with clients worldwide and understand the nuances of building for global markets — from localization to cross-border App Store compliance.</p>
+          <h3>International by Design</h3>
+          <p>We build for global markets from day one — localization, cross-border compliance, and App Store standards on every continent.</p>
         </div>
-        <div class="why-card">
+        <div class="why-card reveal" data-delay="2">
           <div class="why-card__num">03</div>
-          <h3>Results&#8209;Driven</h3>
-          <p>We measure success by your growth. Every campaign and every app is built around clear KPIs, transparent reporting, and continuous improvement.</p>
+          <h3>Results, Not Reports</h3>
+          <p>We measure success by your growth. Clear KPIs, transparent reporting, and continuous improvement — nothing less.</p>
         </div>
       </div>
     </div>
@@ -171,11 +187,10 @@
   <!-- ── CTA ───────────────────────────────────────────────── -->
   <section class="cta-section" id="contact" aria-label="Contact call to action">
     <div class="container">
-      <div class="cta-box">
-        <div>
-          <h2>Ready to grow smarter?</h2>
-          <p>Tell us about your project — we'll get back to you within one business day.</p>
-        </div>
+      <div class="cta-box reveal">
+        <span class="label" style="justify-content:center;">Let's Talk</span>
+        <h2>Ready to build<br />what's next?</h2>
+        <p>Tell us where you want to go. We'll reply within one business day.</p>
         <div class="cta-box__actions">
           <a href="mailto:info@scribanova.com" class="btn btn-primary">Email Us</a>
           <a href="support.html" class="btn btn-outline">Support</a>
@@ -190,13 +205,13 @@
       <div class="footer__top">
         <div class="footer__brand">
           <strong>Scriba<span>Nova</span></strong>
-          <p>Intelligent marketing solutions and app development powered by AI.</p>
+          <p>Intelligent marketing solutions and app development, powered by AI.</p>
         </div>
         <nav class="footer__links" aria-label="Footer navigation">
           <div class="footer__col">
             <h4>Company</h4>
             <ul>
-              <li><a href="#about">About</a></li>
+              <li><a href="#why">Why Us</a></li>
               <li><a href="#services">Services</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
