@@ -1,6 +1,6 @@
 {
   "health": "green",
   "stage": "live",
-  "next": "Higgsfield-credits bijkopen en hero-visual genereren; daarna live-check op scribanova.com",
-  "note": "Volledige redesign naar dark premium look: particle-hero, scroll-animaties, nieuwe copy; gepusht naar GitHub (auto-deploy Netlify)"
+  "next": "Live-check op scribanova.com na Netlify-deploy; eventueel eigen propositie/prijzen scherper neerzetten",
+  "note": "Flagship-hero toegevoegd: Higgsfield neurale loop-video + interactief particleveld + muis-parallax; gepusht naar GitHub (auto-deploy Netlify)"
 }
