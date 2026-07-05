@@ -3,244 +3,292 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scriba Nova | AI Marketing &amp; App Development</title>
-  <meta name="description" content="Scriba Nova builds intelligent marketing engines and world-class apps powered by AI. We help ambitious brands grow smarter, faster, everywhere." />
-  <meta name="keywords" content="AI marketing solutions, app development, iOS app, Android app, digital marketing, growth marketing, Scriba Nova" />
+  <title>Scriba Nova | AI Marketing and App Development Studio</title>
+  <meta name="description" content="Scriba Nova is a studio that ships. We use AI to turn one brief into live marketing and working apps, in weeks. Describe your business and watch us draft it." />
+  <meta name="keywords" content="AI marketing studio, app development studio, ai marketing automation, custom app development, generative marketing, Scriba Nova" />
   <meta name="robots" content="index, follow" />
+  <meta name="author" content="Scriba Nova" />
   <link rel="canonical" href="https://scribanova.com/" />
 
-  <!-- Open Graph -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://scribanova.com/" />
-  <meta property="og:title"       content="Scriba Nova | AI Marketing &amp; App Development" />
-  <meta property="og:description" content="Intelligent marketing engines and world-class apps, powered by AI." />
-  <meta property="og:image"       content="https://scribanova.com/og-image.png" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content="Scriba Nova | AI Marketing &amp; App Development" />
-  <meta name="twitter:description" content="Intelligent marketing engines and world-class apps, powered by AI." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://scribanova.com/" />
+  <meta property="og:title" content="Scriba Nova | A studio that ships" />
+  <meta property="og:description" content="We use AI to turn one brief into live marketing and working apps, in weeks. Describe your business and watch the studio draft it." />
+  <meta property="og:image" content="https://scribanova.com/assets/og.png" />
+  <meta property="og:site_name" content="Scriba Nova" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Scriba Nova | A studio that ships" />
+  <meta name="twitter:description" content="We use AI to turn one brief into live marketing and working apps, in weeks." />
+  <meta name="twitter:image" content="https://scribanova.com/assets/og.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Scriba Nova",
+    "url": "https://scribanova.com",
+    "description": "A studio that uses AI to turn one brief into live marketing and working apps, in weeks. AI marketing solutions and custom app development for ambitious international companies.",
+    "areaServed": "Worldwide",
+    "serviceType": ["AI Marketing", "App Development", "Generative Marketing", "Product Design"],
+    "knowsAbout": ["AI marketing automation", "iOS app development", "Android app development", "conversion optimization", "app store optimization"],
+    "email": "info@scribanova.com",
+    "sameAs": ["https://www.linkedin.com/company/scribanova"],
+    "makesOffer": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Marketing Solutions", "url": "https://scribanova.com/ai-marketing" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "App Development", "url": "https://scribanova.com/app-development" } }
+    ]
+  }
+  </script>
 </head>
 <body>
 
-  <div class="cursor-glow" aria-hidden="true"></div>
-
-  <!-- ── Navigation ───────────────────────────────────────── -->
+  <!-- Navigation -->
   <header>
-    <nav class="nav" role="navigation" aria-label="Main navigation">
-      <div class="container nav__inner">
-        <a href="/" class="nav__logo" aria-label="Scriba Nova home">Scriba<span>Nova</span></a>
-
+    <nav class="nav" aria-label="Main navigation">
+      <div class="wide nav__inner">
+        <a href="/" class="nav__logo" aria-label="Scriba Nova home">Scriba<span class="n"> Nova</span></a>
         <ul class="nav__links">
-          <li><a href="#services">Services</a></li>
-          <li><a href="#why">Why Us</a></li>
+          <li><a href="#method">Method</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="/insights/">Insights</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><a href="support.html">Support</a></li>
         </ul>
-
-        <a href="#contact" class="btn btn-primary nav__cta">Start a Project</a>
-
-        <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
+        <a href="#contact" class="btn btn-line nav__cta">Start a brief</a>
+        <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
-
-      <div class="nav__mobile" id="mobileNav" aria-label="Mobile navigation">
-        <a href="#services">Services</a>
-        <a href="#why">Why Us</a>
+      <div class="nav__mobile" id="mobileNav">
+        <a href="#method">Method</a>
+        <a href="#work">Work</a>
+        <a href="/insights/">Insights</a>
         <a href="#contact">Contact</a>
-        <a href="support.html">Support</a>
       </div>
     </nav>
   </header>
 
-  <!-- ── Hero ─────────────────────────────────────────────── -->
-  <section class="hero" aria-label="Hero">
-    <div class="hero__media" aria-hidden="true">
-      <img class="hero__poster" src="assets/hero-a.png" alt="" />
-      <video class="hero__video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-a.png">
-        <source src="assets/hero.mp4" type="video/mp4" />
-      </video>
-    </div>
-    <canvas id="heroCanvas" aria-hidden="true"></canvas>
-    <div class="container">
-      <div class="hero__content">
-        <h1>
-          <span class="line"><span>We build what's</span></span>
-          <span class="line"><span><em>next.</em></span></span>
-        </h1>
-        <p class="hero__sub">
-          Scriba Nova engineers intelligent marketing systems and exceptional apps — where artificial intelligence meets craftsmanship, and ambition meets execution.
-        </p>
-        <div class="hero__actions">
-          <a href="#services" class="btn btn-primary">Explore Our Work</a>
-          <a href="#contact"  class="btn btn-outline">Start a Conversation</a>
+  <main>
+    <!-- HERO: The Living Ledger -->
+    <section class="hero" aria-label="Introduction">
+      <div class="wide">
+        <div class="hero__rule" aria-hidden="true"></div>
+        <div class="hero__eyebrow">Scriba Nova / A studio that ships</div>
+        <h1>Tell us what you sell.<br />Watch us draft it<span class="cursor" aria-hidden="true"></span></h1>
+        <p class="hero__sub">We use AI to turn a single sentence into live marketing and working apps. Not slides. Not someday. In weeks. Start below and see how we think, in real time.</p>
+
+        <!-- Interactive ledger -->
+        <div class="ledger" id="ledger">
+          <div class="ledger__bar" aria-hidden="true">
+            <span class="dot"></span>
+            <span>Scriba Nova — Draft Ledger</span>
+          </div>
+          <form class="ledger__form" id="ledgerForm" autocomplete="off">
+            <span class="ledger__prompt" aria-hidden="true">&gt;</span>
+            <label for="ledgerInput" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Describe your business</label>
+            <input class="ledger__input" id="ledgerInput" type="text" placeholder="a boutique coffee roaster in Lisbon" maxlength="120" />
+            <button type="submit" class="btn btn-ox ledger__go">Draft it</button>
+          </form>
+          <div class="ledger__hint" id="ledgerHint">One sentence about your business. Try <b data-fill="a boutique coffee roaster in Lisbon">a coffee roaster</b>, <b data-fill="a B2B fintech app for freelancers">a fintech app</b>, or <b data-fill="an online yoga studio for busy parents">a yoga studio</b>.</div>
+
+          <div class="ledger__thinking" id="ledgerThinking" aria-live="polite"></div>
+
+          <div class="ledger__out" id="ledgerOut" aria-live="polite"></div>
         </div>
       </div>
-    </div>
-    <div class="hero__scroll" aria-hidden="true">Scroll</div>
-  </section>
+    </section>
 
-  <!-- ── Marquee ──────────────────────────────────────────── -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee__track">
-      <span>AI-Driven Growth</span>
-      <span>App Development</span>
-      <span>Marketing Intelligence</span>
-      <span>iOS &amp; Android</span>
-      <span>Global Reach</span>
-      <span>AI-Driven Growth</span>
-      <span>App Development</span>
-      <span>Marketing Intelligence</span>
-      <span>iOS &amp; Android</span>
-      <span>Global Reach</span>
-    </div>
-  </div>
-
-  <!-- ── Services ──────────────────────────────────────────── -->
-  <section id="services" aria-labelledby="services-heading">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="label">What We Do</span>
-        <h2 id="services-heading">Two disciplines.<br />One obsession: growth.</h2>
-        <p>Marketing that thinks and apps that perform — engineered together, so every launch lands and every campaign converts.</p>
-      </div>
-
-      <div class="services__grid">
-        <article class="service-card reveal">
-          <div class="service-card__num">/ 01</div>
-          <h3>Smart Marketing Solutions</h3>
-          <p>AI-driven marketing systems that find your audience, learn what moves them, and scale what works — with surgical precision.</p>
-          <ul class="service-features">
-            <li>AI-powered audience targeting &amp; segmentation</li>
-            <li>Data-driven campaign strategy &amp; execution</li>
-            <li>Performance analytics &amp; continuous optimization</li>
-            <li>Automated content personalization at scale</li>
-            <li>App Store Optimization (ASO)</li>
-          </ul>
-        </article>
-
-        <article class="service-card reveal" data-delay="1">
-          <div class="service-card__num">/ 02</div>
-          <h3>App Development</h3>
-          <p>From first sketch to App Store feature — polished, performant applications built to international standards and made to be talked about.</p>
-          <ul class="service-features">
-            <li>iOS &amp; Android — native and cross-platform</li>
-            <li>UX/UI design that earns loyalty</li>
-            <li>App Store &amp; Google Play submission &amp; compliance</li>
-            <li>Ongoing maintenance, updates &amp; monitoring</li>
-            <li>Seamless back-end integration &amp; APIs</li>
-          </ul>
-        </article>
+    <!-- Moving strip -->
+    <div class="strip" aria-hidden="true">
+      <div class="strip__track">
+        <span>Positioning</span><span>Campaigns</span><span>Landing systems</span><span>iOS &amp; Android</span><span>Brand voice</span><span>Launch</span>
+        <span>Positioning</span><span>Campaigns</span><span>Landing systems</span><span>iOS &amp; Android</span><span>Brand voice</span><span>Launch</span>
       </div>
     </div>
-  </section>
 
-  <!-- ── Numbers ───────────────────────────────────────────── -->
-  <div class="numbers" aria-label="Key figures">
-    <div class="container">
-      <div class="numbers__grid">
-        <div class="numbers__item reveal">
-          <strong><span data-count="100" data-suffix="%">0%</span></strong>
-          <p>AI-first — intelligence embedded in every solution we ship</p>
+    <!-- Method -->
+    <section id="method" aria-labelledby="method-h">
+      <div class="wide">
+        <div class="section-head reveal">
+          <span class="kicker">How we work</span>
+          <h2 id="method-h">You just watched the first step. Here is the rest.</h2>
+          <p>Most agencies sell a strategy deck and disappear before anything ships. We work in the open, on a fixed scope and a fixed timeline, and you keep everything we make.</p>
         </div>
-        <div class="numbers__item reveal" data-delay="1">
-          <strong><em>2</em> platforms</strong>
-          <p>Full-cycle development for iOS and Android</p>
-        </div>
-        <div class="numbers__item reveal" data-delay="2">
-          <strong><span data-count="24" data-suffix="h">0h</span></strong>
-          <p>Response time — we move at the speed of your ambition</p>
+        <div class="method__list">
+          <div class="method__item reveal">
+            <div class="method__num">01</div>
+            <div><h3>Draft</h3></div>
+            <div><p>We turn your brief into a concrete direction fast: positioning, message, and a first shape of the work. You react to something real in days, not weeks of workshops.</p><p class="method__meta method__body2">Deliverable: direction and prototype</p></div>
+          </div>
+          <div class="method__item reveal">
+            <div class="method__num">02</div>
+            <div><h3>Build</h3></div>
+            <div><p>We design and build the marketing engine and the product it runs on. AI makes us fast; senior judgement makes it good. You see progress continuously.</p><p class="method__meta method__body2">Deliverable: live campaigns and working app</p></div>
+          </div>
+          <div class="method__item reveal">
+            <div class="method__num">03</div>
+            <div><h3>Ship</h3></div>
+            <div><p>We launch, measure, and tune against clear numbers. App Store and Google Play submission included. Then we hand you the keys, fully documented.</p><p class="method__meta method__body2">Deliverable: launch, metrics, ownership</p></div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- ── Why ───────────────────────────────────────────────── -->
-  <section id="why" aria-labelledby="why-heading">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="label">Why Scriba Nova</span>
-        <h2 id="why-heading">Built for brands<br />that refuse average.</h2>
-        <p>We operate at the intersection of technology and craft — with a relentless focus on what actually moves the needle.</p>
-      </div>
+    <div class="divider"></div>
 
-      <div class="why__grid">
-        <div class="why-card reveal">
-          <div class="why-card__num">01</div>
-          <h3>AI-First, Always</h3>
-          <p>Artificial intelligence isn't a feature we add — it's the foundation we build on. Every strategy, every workflow, every decision is sharpened by it.</p>
+    <!-- Work / disciplines -->
+    <section id="work" aria-labelledby="work-h">
+      <div class="wide">
+        <div class="section-head reveal">
+          <span class="kicker">What we build</span>
+          <h2 id="work-h">Two disciplines that are stronger together.</h2>
+          <p>We do two things, and we do them so they reinforce each other: the marketing that finds your audience, and the product that keeps them.</p>
         </div>
-        <div class="why-card reveal" data-delay="1">
-          <div class="why-card__num">02</div>
-          <h3>International by Design</h3>
-          <p>We build for global markets from day one — localization, cross-border compliance, and App Store standards on every continent.</p>
-        </div>
-        <div class="why-card reveal" data-delay="2">
-          <div class="why-card__num">03</div>
-          <h3>Results, Not Reports</h3>
-          <p>We measure success by your growth. Clear KPIs, transparent reporting, and continuous improvement — nothing less.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CTA ───────────────────────────────────────────────── -->
-  <section class="cta-section" id="contact" aria-label="Contact call to action">
-    <div class="container">
-      <div class="cta-box reveal">
-        <span class="label" style="justify-content:center;">Let's Talk</span>
-        <h2>Ready to build<br />what's next?</h2>
-        <p>Tell us where you want to go. We'll reply within one business day.</p>
-        <div class="cta-box__actions">
-          <a href="mailto:info@scribanova.com" class="btn btn-primary">Email Us</a>
-          <a href="support.html" class="btn btn-outline">Support</a>
+        <div class="disc">
+          <article class="disc__card reveal">
+            <div class="idx">/ 01</div>
+            <h3>AI Marketing Solutions</h3>
+            <p>Marketing systems that find the right people, learn what moves them, and scale what works. Built to be measured, not admired.</p>
+            <ul class="disc__list">
+              <li>Positioning and message that actually lands</li>
+              <li>Campaigns and the landing systems behind them</li>
+              <li>AI content workflows and personalization at scale</li>
+              <li>Analytics, experimentation, and app store optimization</li>
+            </ul>
+            <a href="/ai-marketing/" class="more">Read the discipline</a>
+          </article>
+          <article class="disc__card reveal" data-d="1">
+            <div class="idx">/ 02</div>
+            <h3>App Development</h3>
+            <p>From prototype to store: native and web apps that feel considered, ship on time, and pass review the first time.</p>
+            <ul class="disc__list">
+              <li>iOS, Android, and web, native or cross-platform</li>
+              <li>Product design that earns loyalty</li>
+              <li>App Store and Google Play submission and compliance</li>
+              <li>Back-end, APIs, maintenance, and monitoring</li>
+            </ul>
+            <a href="/app-development/" class="more">Read the discipline</a>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── Footer ────────────────────────────────────────────── -->
-  <footer class="footer" aria-label="Footer">
-    <div class="container">
+    <!-- Blot: principles (dark inversion) -->
+    <section class="blot" aria-labelledby="principles-h">
+      <div class="wide">
+        <div class="section-head reveal">
+          <span class="kicker">What you can count on</span>
+          <h2 id="principles-h">We would rather be exact than impressive.</h2>
+        </div>
+        <div class="principles">
+          <div class="principle reveal">
+            <div class="p-num">01</div>
+            <h3>Direct access</h3>
+            <p>You work with the people who do the work. No account layer, no handoff, no telephone game.</p>
+          </div>
+          <div class="principle reveal" data-d="1">
+            <div class="p-num">02</div>
+            <h3>Fixed scope, fixed timeline</h3>
+            <p>You know what you get and when. If the first milestone does not land, you do not pay for it.</p>
+          </div>
+          <div class="principle reveal" data-d="2">
+            <div class="p-num">03</div>
+            <h3>You own everything</h3>
+            <p>Every asset, every line of code, every account. We build it to be yours, and to outlast us.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Insights teaser -->
+    <section aria-labelledby="insights-h">
+      <div class="wide">
+        <div class="section-head reveal">
+          <span class="kicker">Insights</span>
+          <h2 id="insights-h">How we think, in writing.</h2>
+          <p>No case studies yet, so here is the next best proof: our standards, in the open.</p>
+        </div>
+        <div class="posts">
+          <a class="post-card reveal" href="/insights/ai-marketing-vs-traditional-roi/">
+            <span class="cat">AI Marketing</span>
+            <h3>AI marketing versus traditional marketing, on ROI</h3>
+            <p>Where AI actually changes the maths, and where it is just noise dressed as speed.</p>
+            <span class="read">Read →</span>
+          </a>
+          <a class="post-card reveal" data-d="1" href="/insights/cost-to-build-ai-app/">
+            <span class="cat">App Development</span>
+            <h3>What it really costs to build an AI-powered app</h3>
+            <p>A straight answer on budget, timeline, and the parts nobody quotes for.</p>
+            <span class="read">Read →</span>
+          </a>
+          <a class="post-card reveal" data-d="2" href="/insights/ship-dont-pitch/">
+            <span class="cat">Method</span>
+            <h3>Ship, do not pitch: how we compress idea to live</h3>
+            <p>The working method that turns a sentence into a launch in weeks.</p>
+            <span class="read">Read →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Signature CTA -->
+    <section class="cta-section" id="contact" aria-labelledby="contact-h">
+      <div class="wide">
+        <div class="sign reveal">
+          <span class="kicker" style="justify-content:center">The next line is yours</span>
+          <h2 id="contact-h">Bring us the real brief.</h2>
+          <p>That draft above took one sentence. Imagine what we build with a proper brief. We take on a small number of engagements at a time, so we can go deep on each.</p>
+          <div class="sign__line" aria-hidden="true"></div>
+          <div class="sign__actions">
+            <a href="/support/#brief" class="btn btn-ox">Request a working session</a>
+            <a href="#method" class="btn btn-line">See how we work</a>
+          </div>
+          <p class="sign__micro">We reply within one business day. Currently taking on three clients at a time.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="wide">
       <div class="footer__top">
         <div class="footer__brand">
-          <strong>Scriba<span>Nova</span></strong>
-          <p>Intelligent marketing solutions and app development, powered by AI.</p>
+          <strong>Scriba<span class="n"> Nova</span></strong>
+          <p>A studio that uses AI to turn one brief into live marketing and working apps.</p>
         </div>
-        <nav class="footer__links" aria-label="Footer navigation">
+        <nav class="footer__links" aria-label="Footer">
           <div class="footer__col">
-            <h4>Company</h4>
+            <h4>Studio</h4>
             <ul>
-              <li><a href="#why">Why Us</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href="#method">Method</a></li>
+              <li><a href="/ai-marketing/">AI Marketing</a></li>
+              <li><a href="/app-development/">App Development</a></li>
+              <li><a href="/insights/">Insights</a></li>
             </ul>
           </div>
           <div class="footer__col">
-            <h4>Legal</h4>
+            <h4>Contact</h4>
             <ul>
-              <li><a href="privacy-policy.html">Privacy Policy</a></li>
-              <li><a href="support.html">Support</a></li>
+              <li><a href="/support/#brief">Start a brief</a></li>
+              <li><a href="mailto:info@scribanova.com">info@scribanova.com</a></li>
+              <li><a href="/support/">Support</a></li>
+              <li><a href="/privacy-policy/">Privacy</a></li>
             </ul>
           </div>
         </nav>
       </div>
       <div class="footer__bottom">
-        <p>&copy; <span id="year"></span> Scriba Nova. All rights reserved.</p>
-        <p>scribanova.com</p>
+        <span>&copy; <span id="year"></span> Scriba Nova. All rights reserved.</span>
+        <span>Made with intent, not templates.</span>
       </div>
     </div>
   </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="js/ledger.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

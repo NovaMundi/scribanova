@@ -2,25 +2,32 @@
   publish = "."
   functions = "netlify/functions"
 
+# The Living Ledger (homepage brand-kit generator)
+[[redirects]]
+  from = "/api/generate-ledger"
+  to   = "/.netlify/functions/generate-ledger"
+  status = 200
+
+# Agenda import tool (kept as-is)
 [[redirects]]
   from = "/importagenda"
   to   = "/importagenda.html"
   status = 200
 
-[[redirects]]
-  from = "/privacy-policy"
-  to   = "/privacy-policy.html"
-  status = 200
-
-[[redirects]]
-  from = "/support"
-  to   = "/support.html"
-  status = 200
-
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "DENY"
+    X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

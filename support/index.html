@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Start a Brief and Support | Scriba Nova</title>
+  <meta name="description" content="Request a working session with Scriba Nova, or get support for our apps and services. We reply within one business day." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://scribanova.com/support/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://scribanova.com/support/" />
+  <meta property="og:title" content="Start a Brief and Support | Scriba Nova" />
+  <meta property="og:description" content="Request a working session, or get support. We reply within one business day." />
+  <meta property="og:image" content="https://scribanova.com/assets/og.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="wide nav__inner">
+        <a href="/" class="nav__logo" aria-label="Scriba Nova home">Scriba<span class="n"> Nova</span></a>
+        <ul class="nav__links">
+          <li><a href="/ai-marketing/">AI Marketing</a></li>
+          <li><a href="/app-development/">App Development</a></li>
+          <li><a href="/insights/">Insights</a></li>
+          <li><a href="/support/#brief">Contact</a></li>
+        </ul>
+        <a href="#brief" class="btn btn-line nav__cta">Start a brief</a>
+        <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+      <div class="nav__mobile" id="mobileNav">
+        <a href="/ai-marketing/">AI Marketing</a>
+        <a href="/app-development/">App Development</a>
+        <a href="/insights/">Insights</a>
+        <a href="#brief">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="wide">
+        <span class="kicker">Contact and support</span>
+        <h1>Start a brief, or get support.</h1>
+        <p>Two reasons to be here. Start a new engagement below, or reach us about an existing app or service. We reply within one business day.</p>
+      </div>
+    </section>
+
+    <section class="page-body" id="brief">
+      <div class="wide">
+        <div class="form-grid">
+          <div>
+            <span class="kicker">The brief</span>
+            <h2 class="serif" style="font-size:1.9rem;margin:1rem 0 .8rem">Tell us what you want to build.</h2>
+            <p style="color:var(--ink-soft);margin-bottom:2rem">The more concrete, the better. We take on a small number of engagements at a time, so we read every brief properly.</p>
+
+            <div class="contact-item"><div class="ic">@</div><div><strong>Direct</strong><span><a href="mailto:info@scribanova.com" style="color:var(--ox)">info@scribanova.com</a></span></div></div>
+            <div class="contact-item"><div class="ic">§</div><div><strong>App support</strong><span><a href="mailto:info@scribanova.com" style="color:var(--ox)">info@scribanova.com</a></span></div></div>
+            <div class="contact-item"><div class="ic">◷</div><div><strong>Response time</strong><span>Within one business day</span></div></div>
+
+            <div style="margin-top:2rem;padding:1.2rem;border:1px solid var(--ink-line);border-radius:4px;background:var(--paper-card)">
+              <p style="font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.4rem">The promise</p>
+              <p style="font-size:.9rem;color:var(--ink-soft)">If the first milestone does not land, you do not pay for it. Currently taking on three clients at a time.</p>
+            </div>
+          </div>
+
+          <div>
+            <form id="briefForm" name="brief" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-success="briefSuccess" action="/support/?sent=true">
+              <p style="display:none"><label>Skip: <input name="bot-field" /></label></p>
+              <input type="hidden" name="form-name" value="brief" />
+
+              <div class="field">
+                <label for="briefName">Your name</label>
+                <input type="text" id="briefName" name="name" placeholder="Jane Okonkwo" required autocomplete="name" />
+              </div>
+              <div class="field">
+                <label for="briefEmail">Work email</label>
+                <input type="email" id="briefEmail" name="email" placeholder="jane@company.com" required autocomplete="email" />
+              </div>
+              <div class="field">
+                <label for="briefCompany">Company</label>
+                <input type="text" id="briefCompany" name="company" placeholder="Company name" autocomplete="organization" />
+              </div>
+              <div class="field">
+                <label for="briefWhat">What are you building?</label>
+                <textarea id="briefWhat" name="what" placeholder="One or two sentences on the product, the marketing, or both." required></textarea>
+              </div>
+              <div class="field">
+                <label for="briefBudget">Budget range</label>
+                <select id="briefBudget" name="budget" required>
+                  <option value="">Select a range</option>
+                  <option value="exploring">Still exploring</option>
+                  <option value="10-25k">&euro;10k to &euro;25k</option>
+                  <option value="25-50k">&euro;25k to &euro;50k</option>
+                  <option value="50-100k">&euro;50k to &euro;100k</option>
+                  <option value="100k+">&euro;100k and up</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="briefTimeline">Timeline</label>
+                <select id="briefTimeline" name="timeline">
+                  <option value="">Select</option>
+                  <option value="asap">As soon as possible</option>
+                  <option value="1-3m">Within 1 to 3 months</option>
+                  <option value="3-6m">3 to 6 months</option>
+                  <option value="planning">Just planning</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-ox" style="width:100%">Request a working session</button>
+              <div class="form-success" id="briefSuccess" role="alert">Received. We read every brief properly and reply within one business day.</div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wide">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <strong>Scriba<span class="n"> Nova</span></strong>
+          <p>A studio that uses AI to turn one brief into live marketing and working apps.</p>
+        </div>
+        <nav class="footer__links" aria-label="Footer">
+          <div class="footer__col"><h4>Studio</h4><ul>
+            <li><a href="/ai-marketing/">AI Marketing</a></li>
+            <li><a href="/app-development/">App Development</a></li>
+            <li><a href="/insights/">Insights</a></li>
+          </ul></div>
+          <div class="footer__col"><h4>Contact</h4><ul>
+            <li><a href="#brief">Start a brief</a></li>
+            <li><a href="mailto:info@scribanova.com">info@scribanova.com</a></li>
+            <li><a href="/privacy-policy/">Privacy</a></li>
+          </ul></div>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; <span id="year"></span> Scriba Nova. All rights reserved.</span>
+        <span>Made with intent, not templates.</span>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

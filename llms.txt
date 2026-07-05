@@ -1,0 +1,22 @@
+# Scriba Nova
+
+> A studio that uses AI to turn one brief into live marketing and working apps, in weeks. We serve ambitious companies worldwide with two disciplines: AI marketing solutions and custom app development.
+
+Scriba Nova is a premium studio. We combine AI speed with senior judgement to move from an idea to shipped work quickly. We work on a fixed scope and fixed timeline, give clients direct access to the people doing the work, and hand over full ownership of everything we make. If the first milestone does not land, the client does not pay for it. We take on a small number of engagements at a time.
+
+## What we do
+
+- AI Marketing Solutions: positioning and message, campaigns and the landing systems behind them, AI content workflows and personalization, analytics and experimentation, and app store optimization. https://scribanova.com/ai-marketing/
+- App Development: iOS, Android, and web apps, native or cross-platform, from prototype to App Store and Google Play submission, including back-end, APIs, maintenance, and monitoring. https://scribanova.com/app-development/
+
+## Key pages
+
+- Home, including a live tool that drafts a bespoke mini brand kit from one sentence: https://scribanova.com/
+- Insights (writing on AI marketing and app development): https://scribanova.com/insights/
+- Start a brief or get support: https://scribanova.com/support/
+- Privacy policy: https://scribanova.com/privacy-policy/
+
+## Contact
+
+- Email: info@scribanova.com
+- We reply within one business day.
