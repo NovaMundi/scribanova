@@ -23,7 +23,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 
   <script type="application/ld+json">
@@ -53,19 +53,17 @@
       <div class="wide nav__inner">
         <a href="/" class="nav__logo" aria-label="Scriba Nova home">Scriba<span class="n"> Nova</span></a>
         <ul class="nav__links">
-          <li><a href="#notes">Margin Notes</a></li>
+          <li><a href="#work">Services</a></li>
           <li><a href="#method">Method</a></li>
-          <li><a href="#work">Work</a></li>
           <li><a href="/insights/">Insights</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-        <a href="#contact" class="btn btn-line nav__cta">Start a brief</a>
+        <a href="#contact" class="btn btn-ox nav__cta">Start a project</a>
         <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
       <div class="nav__mobile" id="mobileNav">
-        <a href="#notes">Margin Notes</a>
+        <a href="#work">Services</a>
         <a href="#method">Method</a>
-        <a href="#work">Work</a>
         <a href="/insights/">Insights</a>
         <a href="#contact">Contact</a>
       </div>
@@ -73,16 +71,17 @@
   </header>
 
   <main>
-    <!-- HERO: point of view -->
+    <!-- HERO -->
     <section class="hero" aria-label="Introduction">
+      <canvas id="heroCanvas" aria-hidden="true"></canvas>
       <div class="wide">
         <div class="hero__rule" aria-hidden="true"></div>
-        <div class="hero__eyebrow">Scriba Nova / A studio that ships</div>
-        <h1>Anyone can make more.<br />We decide what is worth it<span class="cursor" aria-hidden="true"></span></h1>
-        <p class="hero__sub">AI made production nearly free. Judgement did not get cheaper. Below, we read brands you know and mark what we would change. Then we build the marketing and the app to match.</p>
+        <div class="hero__eyebrow">Scriba Nova / AI-native studio</div>
+        <h1>Marketing that thinks.<br /><span class="g">Apps that perform.</span></h1>
+        <p class="hero__sub">We build intelligent marketing and the products behind it. AI makes us fast, senior judgement makes it good, and we ship in weeks, not quarters.</p>
         <div class="hero__actions">
-          <a href="#notes" class="btn btn-ox">Read the Margin Notes</a>
-          <a href="#contact" class="btn btn-line">Start a brief</a>
+          <a href="#work" class="btn btn-ox">See what we do</a>
+          <a href="#contact" class="btn btn-line">Start a project</a>
         </div>
       </div>
     </section>
@@ -94,79 +93,6 @@
         <span>Positioning</span><span>Campaigns</span><span>Landing systems</span><span>iOS &amp; Android</span><span>Brand voice</span><span>Launch</span>
       </div>
     </div>
-
-    <!-- Margin Notes: curated teardowns of famous brands -->
-    <section id="notes" aria-labelledby="notes-h">
-      <div class="wide">
-        <div class="section-head reveal">
-          <span class="kicker">Margin Notes</span>
-          <h2 id="notes-h">We read the brands you know.<br />Here is what we would change.</h2>
-          <p>No case studies yet, so we will show you the work instead of claiming it. We take a brand everyone recognises, quote its own line back, and mark the one thing we would do differently. This is the job: judgement, in ink.</p>
-        </div>
-
-        <div class="notes">
-          <article class="note note--lead reveal" id="note-airbnb">
-            <div class="note__head">
-              <span class="note__brand">Airbnb</span>
-              <span class="note__cat">Travel / Marketplace</span>
-              <button class="note__share" type="button" data-anchor="note-airbnb" aria-label="Copy link to this note">Copy link</button>
-            </div>
-            <blockquote class="note__quote"><span class="u">Belong Anywhere</span></blockquote>
-            <div class="note__margin">
-              <span class="note__hand">In the margin</span>
-              <p>A beautiful promise, aimed at the wrong moment. What people actually feel at checkout is not belonging, it is doubt. Will the room match the photos, will the host cancel, is this safe. Belonging is the reward. Trust is the barrier. The brand sells the reward and leaves the barrier to the reviews.</p>
-            </div>
-            <p class="note__move"><span>What we would do</span> Put the proof of trust exactly where the fear is, not at the bottom of the page.</p>
-          </article>
-
-          <article class="note reveal" id="note-notion">
-            <div class="note__head">
-              <span class="note__brand">Notion</span>
-              <span class="note__cat">Software</span>
-              <button class="note__share" type="button" data-anchor="note-notion" aria-label="Copy link to this note">Copy link</button>
-            </div>
-            <blockquote class="note__quote"><span class="u">The all-in-one workspace</span></blockquote>
-            <div class="note__margin">
-              <span class="note__hand">In the margin</span>
-              <p>All-in-one is a feature list wearing a headline. To a new user it reads as a blank page and a homework assignment. The real magic is the finished room someone else already built. Sell the empty toolbox and you ask the buyer to imagine the work.</p>
-            </div>
-            <p class="note__move"><span>What we would do</span> Lead with the finished space, not the box of parts.</p>
-          </article>
-
-          <article class="note reveal" data-d="1" id="note-oatly">
-            <div class="note__head">
-              <span class="note__brand">Oatly</span>
-              <span class="note__cat">Consumer</span>
-              <button class="note__share" type="button" data-anchor="note-oatly" aria-label="Copy link to this note">Copy link</button>
-            </div>
-            <blockquote class="note__quote"><span class="u">It is like milk but made for humans</span></blockquote>
-            <div class="note__margin">
-              <span class="note__hand">In the margin</span>
-              <p>The voice is the moat, and it is a good one. The risk is volume. When every surface is a wall of clever text, the cleverness becomes wallpaper and the one devastating line drowns. Wit compounds when it is rationed.</p>
-            </div>
-            <p class="note__move"><span>What we would do</span> Cut the wall to one line. Let the white space do the bragging.</p>
-          </article>
-
-          <article class="note reveal" data-d="2" id="note-rolex">
-            <div class="note__head">
-              <span class="note__brand">Rolex</span>
-              <span class="note__cat">Luxury</span>
-              <button class="note__share" type="button" data-anchor="note-rolex" aria-label="Copy link to this note">Copy link</button>
-            </div>
-            <blockquote class="note__quote"><span class="u">A crown for every achievement</span></blockquote>
-            <div class="note__margin">
-              <span class="note__hand">In the margin</span>
-              <p>Luxury whispers. The moment it explains itself, it shrinks. This line does the customer's bragging for them, which is the one job the customer wants to keep. The strongest heritage brands name the object and step back. The watch has earned the silence.</p>
-            </div>
-            <p class="note__move"><span>What we would do</span> Say less. The object is the argument.</p>
-          </article>
-        </div>
-
-        <p class="notes__foot reveal">We do this for a living. That is the taste you are hiring. <a href="#contact" class="more">Bring us your brand</a></p>
-      </div>
-    </section>
-
-    <div class="divider"></div>
 
     <!-- Method -->
     <section id="method" aria-labelledby="method-h">
@@ -297,12 +223,11 @@
     <section class="cta-section" id="contact" aria-labelledby="contact-h">
       <div class="wide">
         <div class="sign reveal">
-          <span class="kicker" style="justify-content:center">The next line is yours</span>
-          <h2 id="contact-h">Bring us your brand.</h2>
-          <p>You have seen how we read the brands you know. We would rather do it for yours. We take on a small number of engagements at a time, so we can go deep on each.</p>
-          <div class="sign__line" aria-hidden="true"></div>
+          <span class="kicker" style="justify-content:center">Let's build</span>
+          <h2 id="contact-h">Tell us where you want to go.</h2>
+          <p>Whether it is a campaign, a product, or both, we turn the brief into something live. We take on a small number of engagements at a time, so we can go deep on each.</p>
           <div class="sign__actions">
-            <a href="/support/#brief" class="btn btn-ox">Request a working session</a>
+            <a href="/support/#brief" class="btn btn-ox">Start a project</a>
             <a href="#method" class="btn btn-line">See how we work</a>
           </div>
           <p class="sign__micro">We reply within one business day. Currently taking on three clients at a time.</p>
@@ -348,6 +273,7 @@
   </footer>
 
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script src="js/hero.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

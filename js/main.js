@@ -46,25 +46,16 @@
   };
   window.SN_reveal();
 
-  /* Margin Notes: copy a permalink to a single note */
-  document.querySelectorAll('.note__share').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var id = btn.getAttribute('data-anchor');
-      var url = window.location.origin + window.location.pathname + '#' + id;
-      var done = function () {
-        var label = btn.textContent;
-        btn.textContent = 'Link copied';
-        btn.classList.add('copied');
-        setTimeout(function () { btn.textContent = label; btn.classList.remove('copied'); }, 1800);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(done).catch(function () { window.location.hash = id; done(); });
-      } else {
-        window.location.hash = id;
-        done();
-      }
+  /* Service cards: cursor spotlight */
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll('.disc__card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      }, { passive: true });
     });
-  });
+  }
 
   /* Prefill the brief field from ?from= on the support page */
   try {
