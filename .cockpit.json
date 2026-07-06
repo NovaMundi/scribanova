@@ -1,6 +1,6 @@
 {
   "health": "green",
   "stage": "live",
-  "next": "ANTHROPIC_API_KEY-check op Netlify voor live Ledger-generatie; daarna eerste insights-artikelen uitbouwen + backlinks",
-  "note": "Volledige flagship-herbouw: 'Living Ledger' homepage (genereert live mini-merkkit uit 1 zin) in Scribe inkt/papier-stijl, + service-pagina's, insights-blog, JSON-LD/sitemap/llms.txt, Netlify-functie met Claude API"
+  "next": "Live-test Ledger v2 met echte site-URL op scribanova.com (vereist ANTHROPIC_API_KEY op Netlify); daarna insights uitbouwen",
+  "note": "Ledger v2: leest nu de echte website van de bezoeker en onderbouwt elk advies met zichtbare 'Because...'-redenen + citaten van hun site; start-here annotatie fix"
 }
