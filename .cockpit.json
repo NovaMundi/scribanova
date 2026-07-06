@@ -1,6 +1,6 @@
 {
   "health": "green",
   "stage": "live",
-  "next": "Live-check moderne donkere site op scribanova.com; daarna content/insights uitbouwen",
-  "note": "Grote koerswijziging op feedback: inkt/papier-scribe stijl vervangen door moderne donkere high-tech look (interactief hero-signalveld, indigo accent, Inter); alle pagina's mee geherstyled"
+  "next": "Content/insights uitbouwen + koppen fijn-slijpen; eventueel meer service-detail",
+  "note": "Moderne donkere high-tech look goedgekeurd door Tim; hero-signalveld werkt; cache-bug (immutable css/js) opgelost met must-revalidate + ?v= versioning"
 }
