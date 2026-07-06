@@ -2,12 +2,6 @@
   publish = "."
   functions = "netlify/functions"
 
-# The Living Ledger (homepage brand-kit generator)
-[[redirects]]
-  from = "/api/generate-ledger"
-  to   = "/.netlify/functions/generate-ledger"
-  status = 200
-
 # Agenda import tool (kept as-is)
 [[redirects]]
   from = "/importagenda"
