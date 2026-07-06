@@ -1,6 +1,6 @@
 {
   "health": "green",
   "stage": "live",
-  "next": "Live-test Ledger v2 met echte site-URL op scribanova.com (vereist ANTHROPIC_API_KEY op Netlify); daarna insights uitbouwen",
-  "note": "Ledger v2: leest nu de echte website van de bezoeker en onderbouwt elk advies met zichtbare 'Because...'-redenen + citaten van hun site; start-here annotatie fix"
+  "next": "Live-check Margin Notes op scribanova.com; daarna eventueel meer teardowns toevoegen + insights uitbouwen",
+  "note": "Strategische pivot na agent-roundtable: live AI-generator vervangen door 'Margin Notes' (gecureerde teardowns van bekende merken) als premium, deelbaar, anoniem-veilig kloppend hart; hero = standpunt + CTA"
 }
