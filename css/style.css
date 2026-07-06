@@ -185,7 +185,7 @@ section { position: relative; padding: 120px 0; }
 .hero__rule { width: 0; height: 2px; background: var(--ox); margin-bottom: 34px; animation: ruleDraw 1s var(--ease) .1s forwards; }
 @keyframes ruleDraw { to { width: 72px; } }
 
-.hero__eyebrow { font-family: var(--mono); font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ox); margin-bottom: 26px; opacity: 0; animation: fadeUp .8s var(--ease) .2s forwards; }
+.hero__eyebrow { font-family: var(--mono); font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ox); margin-bottom: 26px; animation: fadeUp .8s var(--ease) .2s backwards; }
 
 .hero h1 { font-size: clamp(2.7rem, 6.6vw, 5.6rem); max-width: 17ch; }
 .hero h1 .cursor {
@@ -196,27 +196,27 @@ section { position: relative; padding: 120px 0; }
 }
 @keyframes caret { 50% { opacity: 0; } }
 
-.hero__sub { margin-top: 30px; font-size: 1.18rem; color: var(--ink-soft); max-width: 48ch; opacity: 0; animation: fadeUp .8s var(--ease) .5s forwards; }
+.hero__sub { margin-top: 30px; font-size: 1.18rem; color: var(--ink-soft); max-width: 48ch; animation: fadeUp .8s var(--ease) .5s backwards; }
 
 /* The interactive ledger console */
-.ledger-wrap { position: relative; max-width: 860px; }
+.ledger-wrap { position: relative; max-width: 860px; margin-top: 46px; padding-top: 54px; }
+.ledger-wrap .ledger { margin-top: 0; }
 .ledger__anno {
   position: absolute;
-  top: -14px;
-  right: 8px;
+  top: 0;
+  right: 24px;
+  z-index: 5;
   display: flex;
   align-items: center;
   gap: .5rem;
   font-family: var(--serif);
   font-style: italic;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: var(--ox);
   transform: rotate(-2deg);
   pointer-events: none;
-  opacity: 0;
-  animation: fadeUp .8s var(--ease) 1.15s forwards;
 }
-.ledger__anno svg { width: 40px; height: 30px; }
+.ledger__anno svg { width: 40px; height: 34px; }
 
 .ledger {
   margin-top: 46px;
@@ -225,8 +225,7 @@ section { position: relative; padding: 120px 0; }
   background: var(--paper-card);
   box-shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 30px 70px -28px rgba(23,20,14,.5);
   overflow: hidden;
-  opacity: 0;
-  animation: fadeUp .9s var(--ease) .7s forwards;
+  animation: fadeUp .9s var(--ease) .7s backwards;
 }
 .ledger:focus-within { border-color: var(--ox); box-shadow: 0 0 0 4px rgba(138,43,30,.1), 0 30px 70px -28px rgba(23,20,14,.5); }
 .ledger__bar {
@@ -283,6 +282,12 @@ section { position: relative; padding: 120px 0; }
 
 /* New kit sections */
 .draft__note { font-family: var(--serif); font-style: italic; font-size: .95rem; color: var(--ink-faint); }
+.draft__why { font-family: var(--serif); font-style: italic; font-size: .92rem; color: var(--ink-faint); margin-top: .55rem; max-width: 56ch; }
+.draft__why::before { content: '\2014\00a0'; color: var(--ox); }
+.draft__obs { display: flex; flex-direction: column; gap: .9rem; }
+.draft__ob q { display: block; font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--ink); quotes: '\201C' '\201D'; }
+.draft__ob p { font-size: .9rem; color: var(--ink-soft); margin-top: .2rem; padding-left: 1rem; border-left: 2px solid rgba(138,43,30,.35); }
+.draft__movewhy { display: block; font-family: var(--serif); font-style: italic; font-size: .88rem; color: var(--ink-faint); margin-top: .15rem; }
 .draft__hero { font-family: var(--serif); font-size: 1.35rem; line-height: 1.2; color: var(--ink); }
 .draft__ad { border: 1px solid var(--ink-line); border-radius: 5px; padding: 1.1rem 1.3rem; background: var(--paper); max-width: 520px; }
 .draft__ad strong { display: block; font-family: var(--serif); font-size: 1.12rem; color: var(--ink); margin-bottom: .35rem; }

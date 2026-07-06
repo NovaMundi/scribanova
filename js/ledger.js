@@ -88,10 +88,14 @@
         body: 'You have seen the mediocre version. This is the other kind. See the difference this week.'
       },
       moves: [
-        'Claim one sharp position and say it everywhere, identically.',
-        'Publish one honest piece that answers your buyer’s biggest doubt.',
-        'Put one clear offer on the homepage and measure it.'
+        { move: 'Claim one sharp position and say it everywhere, identically.', why: 'Consistency compounds; scattered messages reset trust to zero each time.' },
+        { move: 'Publish one honest piece that answers your buyer’s biggest doubt.', why: 'The doubt is the last thing standing between reading and buying.' },
+        { move: 'Put one clear offer on the homepage and measure it.', why: 'One measurable offer beats five vague ones you cannot learn from.' }
       ],
+      taglineWhy: 'Built from how you describe yourself; specific enough to be remembered.',
+      voiceWhy: 'Matches what your kind of buyer expects to hear before trusting.',
+      paletteWhy: 'Chosen to fit your sector without looking like everyone in it.',
+      heroWhy: 'Leads with the outcome your buyer wants, not with your category.',
       frames: [
         { tag: 'Hook', line: 'Everyone says they do ' + core + '. Here is the difference.' },
         { tag: 'Proof', line: place ? 'Made in ' + titleCase(place) + '. Felt everywhere.' : 'Built to be the one you come back to.' },
@@ -104,26 +108,39 @@
   /* ── Rendering (staged writing theatre) ────────────────── */
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
 
+  function why(text) {
+    return text ? '<p class="draft__why">Because ' + esc(String(text).replace(/^because\s+/i, '')) + '</p>' : '';
+  }
+
   function rowsFor(d) {
     var rows = [];
 
-    rows.push({ label: 'Tagline', html: '<div class="draft__tagline" style="color:' + esc((d.swatches && d.swatches[0]) || 'inherit') + '">' + esc(d.tagline) + '</div>' });
+    if (d.observations && d.observations.length) {
+      rows.push({
+        label: 'What we read on your site',
+        html: '<div class="draft__obs">' + d.observations.map(function (o) {
+          return '<div class="draft__ob"><q>' + esc(o.quote) + '</q><p>' + esc(o.insight) + '</p></div>';
+        }).join('') + '</div>'
+      });
+    }
+
+    rows.push({ label: 'Tagline', html: '<div class="draft__tagline" style="color:' + esc((d.swatches && d.swatches[0]) || 'inherit') + '">' + esc(d.tagline) + '</div>' + why(d.taglineWhy) });
 
     if (d.audience && d.audience.length) {
       rows.push({ label: 'Who actually buys this', html: '<div class="draft__lines">' + d.audience.map(function (a) { return '<p>' + esc(a) + '</p>'; }).join('') + '</div>' });
     }
 
-    rows.push({ label: 'Brand voice', html: '<div class="draft__lines">' + d.voice.map(function (v) { return '<p>' + esc(v) + '</p>'; }).join('') + '</div>' });
+    rows.push({ label: 'Brand voice', html: '<div class="draft__lines">' + d.voice.map(function (v) { return '<p>' + esc(v) + '</p>'; }).join('') + '</div>' + why(d.voiceWhy) });
 
     rows.push({
       label: 'Your palette — ' + esc(d.palette),
       html: '<div class="draft__swatches" style="margin-bottom:1.4rem">' + d.swatches.map(function (c) {
         return '<div class="draft__sw" style="background:' + esc(c) + '"><span>' + esc(c).toUpperCase() + '</span></div>';
-      }).join('') + '</div><p class="draft__note">Yours, not ours. We write in ink; your brand gets its own colours.</p>'
+      }).join('') + '</div>' + why(d.paletteWhy) + '<p class="draft__note">Yours, not ours. We write in ink; your brand gets its own colours.</p>'
     });
 
     if (d.heroLine) {
-      rows.push({ label: 'Landing page opener', html: '<div class="draft__hero">' + esc(d.heroLine) + '</div>' });
+      rows.push({ label: 'Landing page opener', html: '<div class="draft__hero">' + esc(d.heroLine) + '</div>' + why(d.heroWhy) });
     }
 
     if (d.ad && d.ad.headline) {
@@ -135,7 +152,10 @@
     }).join('') + '</div>' });
 
     if (d.moves && d.moves.length) {
-      rows.push({ label: 'First three moves', html: '<ol class="draft__moves">' + d.moves.map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('') + '</ol>' });
+      rows.push({ label: 'First three moves', html: '<ol class="draft__moves">' + d.moves.map(function (m) {
+        var move = (typeof m === 'string') ? { move: m, why: '' } : m;
+        return '<li>' + esc(move.move) + (move.why ? '<span class="draft__movewhy">' + esc(move.why) + '</span>' : '') + '</li>';
+      }).join('') + '</ol>' });
     }
 
     return rows;
@@ -183,21 +203,23 @@
 
   /* ── Progress state while generating ───────────────────── */
   var STEPS = ['Reading your brief', 'Finding the angle', 'Naming your buyer', 'Setting the tagline', 'Mixing your palette', 'Sketching the campaign', 'Planning the first moves'];
+  var STEPS_SITE = ['Opening your website', 'Reading your homepage', 'Noting what you stand for', 'Finding the angle', 'Naming your buyer', 'Setting the tagline', 'Mixing your palette', 'Sketching the campaign', 'Planning the first moves'];
   var stepTimer = null;
 
-  function startProgress() {
+  function startProgress(isUrl) {
+    var steps = isUrl ? STEPS_SITE : STEPS;
     goBtn.disabled = true;
     goBtn.dataset.label = goBtn.textContent;
     goBtn.textContent = 'Drafting…';
-    out.innerHTML = '<div class="draft"><div class="draft__row"><div class="draft__label">Working</div><div class="ledger__writing" id="ledgerWriting">Reading your brief<span class="caret2"></span></div></div></div>';
+    out.innerHTML = '<div class="draft"><div class="draft__row"><div class="draft__label">Working</div><div class="ledger__writing" id="ledgerWriting">' + steps[0] + '<span class="caret2"></span></div></div></div>';
     out.classList.add('show');
     if (!reduced) out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     var i = 1;
     var w = document.getElementById('ledgerWriting');
     stepTimer = setInterval(function () {
-      if (w) w.innerHTML = STEPS[i % STEPS.length] + '<span class="caret2"></span>';
+      if (w) w.innerHTML = steps[Math.min(i, steps.length - 1)] + '<span class="caret2"></span>';
       i++;
-    }, 900);
+    }, 1100);
   }
   function stopProgress() {
     if (stepTimer) { clearInterval(stepTimer); stepTimer = null; }
@@ -206,13 +228,19 @@
   }
 
   /* ── Server call with fallback ─────────────────────────── */
+  function looksLikeUrl(s) {
+    if (/\s/.test(s.trim())) return false;
+    return /^(https?:\/\/)?[\w-]+(\.[\w-]+)+([\/?#]\S*)?$/i.test(s.trim());
+  }
+
   function fetchDraft(raw) {
+    var isUrl = looksLikeUrl(raw);
     var ctl = ('AbortController' in window) ? new AbortController() : null;
-    var timeout = setTimeout(function () { if (ctl) ctl.abort(); }, 14000);
+    var timeout = setTimeout(function () { if (ctl) ctl.abort(); }, isUrl ? 20000 : 14000);
     return fetch('/api/generate-ledger', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: raw }),
+      body: JSON.stringify(isUrl ? { url: raw } : { prompt: raw }),
       signal: ctl ? ctl.signal : undefined
     }).then(function (r) {
       clearTimeout(timeout);
@@ -226,6 +254,16 @@
     });
   }
 
+  function fallbackFor(raw) {
+    if (!looksLikeUrl(raw)) return localDraft(raw);
+    // Reading a site needs the server; fall back to the domain name as brief
+    var name = raw.trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '').split(/[\/?#]/)[0];
+    var d = localDraft(name.split('.')[0].replace(/[-_]/g, ' ') + ' (' + name + ')');
+    d.source = name;
+    d.observations = [];
+    return d;
+  }
+
   var busy = false;
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -234,10 +272,10 @@
     busy = true;
     hint.style.display = 'none';
     var t0 = Date.now();
-    startProgress();
+    startProgress(looksLikeUrl(raw));
 
     fetchDraft(raw).catch(function () { return null; }).then(function (d) {
-      var kit = d || localDraft(raw);
+      var kit = d || fallbackFor(raw);
       var seconds = Math.max(3, Math.round((Date.now() - t0) / 1000));
       var minTheatre = reduced ? 0 : 2600;
       var elapsed = Date.now() - t0;
